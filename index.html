@@ -1,28 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Live Sports TV</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA Sibli Mal Cup - Live</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
-<header>
-<h2>⚽ Live Sports TV</h2>
-</header>
+    <header>
+        <div class="logo-container">
+            <span class="icon">⚽</span>
+            <h1>FIFA World Cup 2026</h1>
+        </div>
+    </header>
 
-<div class="categories">
-<button onclick="filterChannel('All')">All</button>
-<button onclick="filterChannel('Sports')">Sports</button>
-<button onclick="filterChannel('News')">News</button>
-</div>
+    <main class="main-layout">
+        <section class="player-container">
+            <div class="responsive-video">
+                <video id="video" controls autoplay poster="https://i.imgur.com/FIFA2026Poster.jpg"></video>
+            </div>
+            <h2 id="channel-title">Select a Channel Below</h2>
+        </section>
 
-<video id="player" controls autoplay></video>
+        <section class="sidebar-container">
+            <h3>Live Channels</h3>
+            <div id="channels" class="channels-list">
+                </div>
+        </section>
+    </main>
 
-<div id="channels"></div>
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
