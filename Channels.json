@@ -1,0 +1,638 @@
+[
+  {
+    "name": "Sony Sports Ten 1 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sonyten1.png",
+    "url": "https://sonyliv.com/ten1/live.m3u8"
+  },
+  {
+    "name": "Sony Sports Ten 2 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sonyten2.png",
+    "url": "https://sonyliv.com/ten2/live.m3u8"
+  },
+  {
+    "name": "Sony Sports Ten 3 HD (Hindi Cricket)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sonyten3.png",
+    "url": "https://sonyliv.com/ten3/live.m3u8"
+  },
+  {
+    "name": "Sony Sports Ten 4 HD (Tamil/Telugu)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sonyten4.png",
+    "url": "https://sonyliv.com/ten4/live.m3u8"
+  },
+  {
+    "name": "Sony Sports Ten 5 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sonyten5.png",
+    "url": "https://sonyliv.com/ten5/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/starsports1.png",
+    "url": "https://hotstar.com/ss1/live.m3u8"
+  },
+  {
+    "name": "Star Sports 2 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/starsports2.png",
+    "url": "https://hotstar.com/ss2/live.m3u8"
+  },
+  {
+    "name": "Star Sports 3 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/starsports3.png",
+    "url": "https://hotstar.com/ss3/live.m3u8"
+  },
+  {
+    "name": "Star Sports Select 1 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/select1.png",
+    "url": "https://hotstar.com/select1/live.m3u8"
+  },
+  {
+    "name": "Star Sports Select 2 HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/select2.png",
+    "url": "https://hotstar.com/select2/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Hindi HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1hindi.png",
+    "url": "https://hotstar.com/ss1hindi/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Bangla",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1bangla.png",
+    "url": "https://hotstar.com/ss1bangla/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Tamil HD",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1tamil.png",
+    "url": "https://hotstar.com/ss1tamil/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Telugu",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1telugu.png",
+    "url": "https://hotstar.com/ss1telugu/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Kannada",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1kannada.png",
+    "url": "https://hotstar.com/ss1kannada/live.m3u8"
+  },
+  {
+    "name": "Star Sports 1 Marathi",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ss1marathi.png",
+    "url": "https://hotstar.com/ss1marathi/live.m3u8"
+  },
+  {
+    "name": "Star Sports First",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ssfirst.png",
+    "url": "https://hotstar.com/ssfirst/live.m3u8"
+  },
+  {
+    "name": "Willow TV (USA Cricket)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/willowtv.png",
+    "url": "https://willow.tv/live/stream.m3u8"
+  },
+  {
+    "name": "Willow HD (IPL Exclusive US)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/willowhd.png",
+    "url": "https://willowhd.com/live.m3u8"
+  },
+  {
+    "name": "PTV Sports (Pakistan)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ptvsports.png",
+    "url": "https://ptv.com.pk/sports/live.m3u8"
+  },
+  {
+    "name": "PTV National (Pakistan)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ptvnational.png",
+    "url": "https://ptv.com.pk/national/live.m3u8"
+  },
+  {
+    "name": "BeIN Sports 1 (MENA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/bein1.png",
+    "url": "https://bein.net/bein1/live.m3u8"
+  },
+  {
+    "name": "BeIN Sports 2 (MENA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/bein2.png",
+    "url": "https://bein.net/bein2/live.m3u8"
+  },
+  {
+    "name": "BeIN Sports 3 (MENA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/bein3.png",
+    "url": "https://bein.net/bein3/live.m3u8"
+  },
+  {
+    "name": "BeIN Sports 4 (MENA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/bein4.png",
+    "url": "https://bein.net/bein4/live.m3u8"
+  },
+  {
+    "name": "BeIN Sports News",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/beinnews.png",
+    "url": "https://bein.net/news/live.m3u8"
+  },
+  {
+    "name": "Tata Sky Sports (India)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tatasky.png",
+    "url": "https://tatasky.com/sports/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Main Event (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skymainevent.png",
+    "url": "https://skysports.com/mainevent/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Premier League",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportspl.png",
+    "url": "https://skysports.com/pl/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Football",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsfb.png",
+    "url": "https://skysports.com/football/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Cricket",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportscricket.png",
+    "url": "https://skysports.com/cricket/live.m3u8"
+  },
+  {
+    "name": "Sky Sports F1",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsf1.png",
+    "url": "https://skysports.com/f1/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Golf",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsgolf.png",
+    "url": "https://skysports.com/golf/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Arena",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsarena.png",
+    "url": "https://skysports.com/arena/live.m3u8"
+  },
+  {
+    "name": "Sky Sports Action",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsaction.png",
+    "url": "https://skysports.com/action/live.m3u8"
+  },
+  {
+    "name": "Sky Sports News",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/skysportsnews.png",
+    "url": "https://skysports.com/news/live.m3u8"
+  },
+  {
+    "name": "BT Sport 1 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/btsport1.png",
+    "url": "https://bt.com/sport1/live.m3u8"
+  },
+  {
+    "name": "BT Sport 2 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/btsport2.png",
+    "url": "https://bt.com/sport2/live.m3u8"
+  },
+  {
+    "name": "BT Sport 3 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/btsport3.png",
+    "url": "https://bt.com/sport3/live.m3u8"
+  },
+  {
+    "name": "BT Sport ESPN",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/btespn.png",
+    "url": "https://bt.com/espn/live.m3u8"
+  },
+  {
+    "name": "ESPN (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/espn.png",
+    "url": "https://espn.com/live.m3u8"
+  },
+  {
+    "name": "ESPN 2 (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/espn2.png",
+    "url": "https://espn2.com/live.m3u8"
+  },
+  {
+    "name": "ESPN U (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/espnu.png",
+    "url": "https://espnu.com/live.m3u8"
+  },
+  {
+    "name": "ESPN News (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/espnnews.png",
+    "url": "https://espnnews.com/live.m3u8"
+  },
+  {
+    "name": "FOX Sports 1 (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/fs1.png",
+    "url": "https://foxsports.com/fs1/live.m3u8"
+  },
+  {
+    "name": "FOX Sports 2 (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/fs2.png",
+    "url": "https://foxsports.com/fs2/live.m3u8"
+  },
+  {
+    "name": "NBC Sports (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/nbcsports.png",
+    "url": "https://nbcsports.com/live.m3u8"
+  },
+  {
+    "name": "CBS Sports (USA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/cbssports.png",
+    "url": "https://cbssports.com/live.m3u8"
+  },
+  {
+    "name": "DAZN 1 (Global)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/dazn1.png",
+    "url": "https://dazn.com/1/live.m3u8"
+  },
+  {
+    "name": "DAZN 2 (Global)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/dazn2.png",
+    "url": "https://dazn.com/2/live.m3u8"
+  },
+  {
+    "name": "SuperSport Grandstand (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersport1.png",
+    "url": "https://supersport.com/grandstand/live.m3u8"
+  },
+  {
+    "name": "SuperSport Cricket (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportcricket.png",
+    "url": "https://supersport.com/cricket/live.m3u8"
+  },
+  {
+    "name": "SuperSport Football (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportfootball.png",
+    "url": "https://supersport.com/football/live.m3u8"
+  },
+  {
+    "name": "SuperSport Rugby (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportrugby.png",
+    "url": "https://supersport.com/rugby/live.m3u8"
+  },
+  {
+    "name": "SuperSport Action (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportaction.png",
+    "url": "https://supersport.com/action/live.m3u8"
+  },
+  {
+    "name": "SuperSport Variety (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportvariety.png",
+    "url": "https://supersport.com/variety/live.m3u8"
+  },
+  {
+    "name": "SuperSport Motorsport (SA)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/supersportmoto.png",
+    "url": "https://supersport.com/motorsport/live.m3u8"
+  },
+  {
+    "name": "EuroSport 1 (Europe)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/eurosport1.png",
+    "url": "https://eurosport.com/1/live.m3u8"
+  },
+  {
+    "name": "EuroSport 2 (Europe)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/eurosport2.png",
+    "url": "https://eurosport.com/2/live.m3u8"
+  },
+  {
+    "name": "Sport 1 (Germany)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sport1de.png",
+    "url": "https://sport1.de/live.m3u8"
+  },
+  {
+    "name": "Sport 2 (Germany)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sport2de.png",
+    "url": "https://sport2.de/live.m3u8"
+  },
+  {
+    "name": "RMC Sport 1 (France)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/rmc1.png",
+    "url": "https://rmcsport.fr/1/live.m3u8"
+  },
+  {
+    "name": "RMC Sport 2 (France)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/rmc2.png",
+    "url": "https://rmcsport.fr/2/live.m3u8"
+  },
+  {
+    "name": "Canal+ Sport (France)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/canalplus.png",
+    "url": "https://canalplus.fr/sport/live.m3u8"
+  },
+  {
+    "name": "Movistar LaLiga (Spain)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/movistarlaliga.png",
+    "url": "https://movistar.com/laliga/live.m3u8"
+  },
+  {
+    "name": "Movistar Champions League (Spain)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/movistarchamps.png",
+    "url": "https://movistar.com/ucl/live.m3u8"
+  },
+  {
+    "name": "Ziggo Sport (Netherlands)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/ziggosport.png",
+    "url": "https://ziggo.nl/sport/live.m3u8"
+  },
+  {
+    "name": "V Sport 1 (Nordic)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/vsport1.png",
+    "url": "https://vsport.com/1/live.m3u8"
+  },
+  {
+    "name": "V Sport 2 (Nordic)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/vsport2.png",
+    "url": "https://vsport.com/2/live.m3u8"
+  },
+  {
+    "name": "V Sport Premium (Nordic)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/vsportpremium.png",
+    "url": "https://vsport.com/premium/live.m3u8"
+  },
+  {
+    "name": "V Sport Golf (Nordic)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/vsportgolf.png",
+    "url": "https://vsport.com/golf/live.m3u8"
+  },
+  {
+    "name": "Eleven Sports 1 (Belgium)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/eleven1.png",
+    "url": "https://elevensports.be/1/live.m3u8"
+  },
+  {
+    "name": "Eleven Sports 2 (Belgium)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/eleven2.png",
+    "url": "https://elevensports.be/2/live.m3u8"
+  },
+  {
+    "name": "Eleven Sports 3 (Belgium)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/eleven3.png",
+    "url": "https://elevensports.be/3/live.m3u8"
+  },
+  {
+    "name": "Polsat Sport (Poland)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/polsatsport.png",
+    "url": "https://polsat.pl/sport/live.m3u8"
+  },
+  {
+    "name": "Polsat Sport Extra (Poland)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/polsatsportextra.png",
+    "url": "https://polsat.pl/sportextra/live.m3u8"
+  },
+  {
+    "name": "Polsat Sport News (Poland)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/polsatsportnews.png",
+    "url": "https://polsat.pl/sportnews/live.m3u8"
+  },
+  {
+    "name": "Match TV (Russia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/matchtv.png",
+    "url": "https://matchtv.ru/live.m3u8"
+  },
+  {
+    "name": "Match Premier (Russia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/matchpremier.png",
+    "url": "https://matchtv.ru/premier/live.m3u8"
+  },
+  {
+    "name": "Match Football (Russia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/matchfootball.png",
+    "url": "https://matchtv.ru/football/live.m3u8"
+  },
+  {
+    "name": "SETANTA Sports (Global)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/setanta.png",
+    "url": "https://setanta.com/live.m3u8"
+  },
+  {
+    "name": "OPTUS Sport (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/optus.png",
+    "url": "https://optus.com.au/sport/live.m3u8"
+  },
+  {
+    "name": "Kayo Sports (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/kayo.png",
+    "url": "https://kayosports.com.au/live.m3u8"
+  },
+  {
+    "name": "FOX Cricket (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxcricket.png",
+    "url": "https://foxsports.com.au/cricket/live.m3u8"
+  },
+  {
+    "name": "FOX League (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxleague.png",
+    "url": "https://foxsports.com.au/league/live.m3u8"
+  },
+  {
+    "name": "FOX Footy (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxfooty.png",
+    "url": "https://foxsports.com.au/footy/live.m3u8"
+  },
+  {
+    "name": "FOX Netball (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxnetball.png",
+    "url": "https://foxsports.com.au/netball/live.m3u8"
+  },
+  {
+    "name": "FOX Motorsport (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxmotorsport.png",
+    "url": "https://foxsports.com.au/motorsport/live.m3u8"
+  },
+  {
+    "name": "FOX Sports News (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/foxsportsnews.png",
+    "url": "https://foxsports.com.au/news/live.m3u8"
+  },
+  {
+    "name": "beIN Sports (Australia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/beinaustralia.png",
+    "url": "https://bein.com.au/live.m3u8"
+  },
+  {
+    "name": "TNT Sports 1 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tnt1.png",
+    "url": "https://tntsports.co.uk/1/live.m3u8"
+  },
+  {
+    "name": "TNT Sports 2 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tnt2.png",
+    "url": "https://tntsports.co.uk/2/live.m3u8"
+  },
+  {
+    "name": "TNT Sports 3 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tnt3.png",
+    "url": "https://tntsports.co.uk/3/live.m3u8"
+  },
+  {
+    "name": "TNT Sports 4 (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tnt4.png",
+    "url": "https://tntsports.co.uk/4/live.m3u8"
+  },
+  {
+    "name": "TNT Sports Box Office (UK)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/tntboxoffice.png",
+    "url": "https://tntsports.co.uk/boxoffice/live.m3u8"
+  },
+  {
+    "name": "Arena Sport 1 (Croatia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/arenasport1.png",
+    "url": "https://arenasport.hr/1/live.m3u8"
+  },
+  {
+    "name": "Arena Sport 2 (Croatia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/arenasport2.png",
+    "url": "https://arenasport.hr/2/live.m3u8"
+  },
+  {
+    "name": "Arena Sport 3 (Croatia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/arenasport3.png",
+    "url": "https://arenasport.hr/3/live.m3u8"
+  },
+  {
+    "name": "Arena Sport 4 (Croatia)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/arenasport4.png",
+    "url": "https://arenasport.hr/4/live.m3u8"
+  },
+  {
+    "name": "SportKlub 1 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub1.png",
+    "url": "https://sportklub.rs/1/live.m3u8"
+  },
+  {
+    "name": "SportKlub 2 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub2.png",
+    "url": "https://sportklub.rs/2/live.m3u8"
+  },
+  {
+    "name": "SportKlub 3 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub3.png",
+    "url": "https://sportklub.rs/3/live.m3u8"
+  },
+  {
+    "name": "SportKlub 4 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub4.png",
+    "url": "https://sportklub.rs/4/live.m3u8"
+  },
+  {
+    "name": "SportKlub 5 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub5.png",
+    "url": "https://sportklub.rs/5/live.m3u8"
+  },
+  {
+    "name": "SportKlub 6 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub6.png",
+    "url": "https://sportklub.rs/6/live.m3u8"
+  },
+  {
+    "name": "SportKlub 7 (Balkans)",
+    "category": "Sports",
+    "logo": "https://i.imgur.com/sportklub7.png",
+    "url": "https://sportklub.rs/7/live.m3u8"
+  }
+]
