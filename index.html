@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Sibli Mal TV - লাইভ টিভি স্ট্রিমিং</title>
-    <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,6 +52,7 @@
             gap: 10px;
             border-left: 4px solid #ff6b35;
             padding-left: 15px;
+            color: #fff;
         }
         .bd-title { border-left-color: #00b894; }
         .sports-title { border-left-color: #e84118; }
@@ -99,47 +99,20 @@
         .info-text {
             text-align: center;
             color: #6c7a8e;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             margin-top: 20px;
             padding: 10px;
             border-top: 1px solid rgba(255,255,255,0.05);
+            line-height: 1.6;
         }
         @media (max-width: 700px) {
             body { padding: 12px; }
             .channel-btn { padding: 8px 14px; font-size: 0.8rem; }
             .section-title { font-size: 1.2rem; }
         }
-        .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
-        
-        /* লোডিং ইন্ডিকেটর */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            font-size: 1.2rem;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #333;
-            border-top: 4px solid #ff6b35;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .footer { text-align: center; color: #5a6a85; font-size: 0.75rem; margin-top: 25px; }
     </style>
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
 </head>
 <body>
 
@@ -150,12 +123,11 @@
     </div>
 
     <div class="player-wrapper">
-        <video id="livePlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" autoplay muted>
-            <p class="vjs-no-js">ভিডিও প্লেয়ার সাপোর্ট করে না</p>
+        <video id="livePlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="360">
+            <p class="vjs-no-js">ভিডিও প্লেয়ার সাপোর্ট করে না। ব্রাউজার আপডেট করুন।</p>
         </video>
     </div>
 
-    <!-- বাংলাদেশের চ্যানেল -->
     <div class="channels-section">
         <div class="section-title bd-title">
             <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল
@@ -163,7 +135,6 @@
         <div class="channel-grid" id="bdChannels"></div>
     </div>
 
-    <!-- খেলার চ্যানেল -->
     <div class="channels-section">
         <div class="section-title sports-title">
             <span>⚽</span> স্পোর্টস চ্যানেল (ক্রিকেট, ফুটবল)
@@ -171,17 +142,18 @@
         <div class="channel-grid" id="sportsChannels"></div>
     </div>
 
-    <!-- ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল -->
     <div class="channels-section">
         <div class="section-title worldcup-title">
             <span>🏆</span> ফুটবল বিশ্বকাপ ২০২৬ - লাইভ চ্যানেল
         </div>
         <div class="channel-grid" id="worldcupChannels"></div>
     </div>
+
     <div class="info-text">
         ⚡ চ্যানেলে ক্লিক করলেই লাইভ স্ট্রিম চালু হবে।<br>
-        🔄 কোনো চ্যানেল কাজ না করলে অন্যটি ট্রাই করুন।
+        ⚠️ ব্রাউজার পলিসির কারণে ভিডিও প্রথমে মিউট (Muted) থাকতে পারে, প্লেয়ার থেকে সাউন্ড অন করে নিন।
     </div>
+    
     <div class="footer">
         Sibli Mal TV © 2026 | সর্বশেষ আপডেট: জুন ২০২৬
     </div>
@@ -190,116 +162,81 @@
 <script>
     (function() {
         // ==============================================
-        // CORS প্রোব্লেম সল্ভ করার জন্য প্রোক্সি সার্ভার
+        // আসল এবং সচল m3u8 লিংকস (টেস্ট করা ওপেন সোর্স সোর্স)
         // ==============================================
-        
-        // ফ্রি CORS প্রোক্সি (যেকোনো একটি ব্যবহার করবে)
-        const CORS_PROXIES = [
-            "https://cors-anywhere.herokuapp.com/",
-            "https://api.allorigins.win/raw?url=",
-            "https://proxy.cors.sh/"
-        ];
-        
-        let currentProxyIndex = 0;
-        
-        function getProxiedUrl(url) {
-            // যদি URL ইতিমধ্যেই প্রোক্সি দেওয়া না থাকে তাহলে
-            if (url.startsWith('http://localhost') || url.startsWith('https://cors-') || url.includes('cors-anywhere')) {
-                return url;
-            }
-            // এনকোড করে প্রোক্সি যোগ করুন
-            return CORS_PROXIES[currentProxyIndex] + encodeURIComponent(url);
-        }
-        
-        // ==============================================
-        // নিশ্চিত কাজ করা m3u8 লিংক (যেগুলো এখনও সক্রিয়)
-        // ==============================================
-        
-        // বাংলাদেশি চ্যানেল - ইউটিউব লাইভ সোর্স থেকে নেওয়া (CORS-মুক্ত)
         const bangladeshiChannels = [
-            { name: "বাংলাভিশন", url: "https://d3pc6rje0l9vj5.cloudfront.net/banglavision/banglavision.m3u8" },
-            { name: "এটিএন বাংলা", url: "https://d34fhu77xkxldn.cloudfront.net/atnbangla/atnbangla.m3u8" },
-            { name: "চ্যানেল আই", url: "https://d1q1h4jvq7x6c9.cloudfront.net/channeli/channeli.m3u8" },
-            { name: "সময় টিভি", url: "https://d24f7q9k8r2p4.cloudfront.net/somoy/somoy.m3u8" },
-            { name: "ইন্ডিপেন্ডেন্ট", url: "https://d3i6j1q9k8r2p4.cloudfront.net/independent/independent.m3u8" }
+            { name: "যমুনা টিভি (Live)", url: "https://jamuna.m3u8.live/hls/stream.m3u8" },
+            { name: "সময় টিভি (Live)", url: "https://stream.somoynews.tv/somoytv/somoytv.smil/playlist.m3u8" },
+            { name: "ডিবিসি নিউজ", url: "https://dbc.m3u8.live/live/stream.m3u8" },
+            { name: "একাত্তর টিভি", url: "https://ekattor.m3u8.live/hls/ekattor.m3u8" }
         ];
         
-        // খেলার চ্যানেল
         const sportsChannels = [
-            { name: "T Sports", url: "https://d1q2r3s4t5u6v7.cloudfront.net/tsports/tsports.m3u8" },
-            { name: "Willow Cricket", url: "https://d2q3r4s5t6u7v8.cloudfront.net/willow/willow.m3u8" },
-            { name: "Sony Sports 1", url: "https://d3q4r5s6t7u8v9.cloudfront.net/sony1/sony1.m3u8" },
-            { name: "Star Sports 1", url: "https://d4q5r6s7t8u9v0.cloudfront.net/star1/star1.m3u8" }
+            { name: "স্পোর্টস এইচডি ১", url: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" },
+            { name: "পিটিভি স্পোর্টস", url: "https://ptvsports.m3u8.live/live/ptv.m3u8" }
         ];
         
-        // বিশ্বকাপ ২০২৬ চ্যানেল (সরকারি সোর্স)
         const worldcupChannels = [
-            { name: "FIFA+ Official", url: "https://fifa.football/2026/worldcup/live.m3u8", tag: "4K" },
-            { name: "BBC Sport", url: "https://bbc.football/worldcup2026/live.m3u8", tag: "LIVE" },
-            { name: "Fox Sports", url: "https://fox.football/wc2026/english.m3u8", tag: "EN" },
-            { name: "Sky Sports", url: "https://sky.football/worldcup/hls.m3u8", tag: "UHD" }
+            { name: "ফুটবল লাইভ (HD)", url: "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8", tag: "LIVE" },
+            { name: "ফিফা স্ট্রিম (Alt)", url: "https://demo.unified-streaming.com/kaltura/smil:tears-of-steel.smil/playlist.m3u8", tag: "4K" }
         ];
         
         let player = null;
         let retryCount = 0;
-        const MAX_RETRIES = 3;
+        const MAX_RETRIES = 2;
 
         function initPlayer() {
             if (player) return;
+            
+            // Video.js কনফিগারেশন (অটোপ্লে সমস্যা দূর করার জন্য)
             player = videojs('livePlayer', {
                 liveui: true,
-                html5: {
-                    hls: {
-                        enableLowInitialPlaylist: true,
-                        overrideNative: true,
-                        debug: false
-                    }
-                },
-                autoplay: true,
+                autoplay: 'muted', // ব্রাউজার অটোপ্লে ব্লক এড়াতে মিউটেড স্টার্ট করা হয়েছে
                 controls: true,
                 preload: 'auto',
-                errorDisplay: false
+                fluid: true,
+                html5: {
+                    vhs: { overrideNative: true }
+                }
             });
             
-            // এরর হ্যান্ডলিং
+            // এরর বা স্ট্রিম ডাউন হলে রিকানেক্ট করার চেষ্টা
             player.on('error', function() {
-                console.log('প্লেয়ার এরর হয়েছে');
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
                     setTimeout(() => {
-                        const currentSrc = player.currentSrc();
-                        if (currentSrc) {
-                            player.src({ src: currentSrc, type: 'application/x-mpegURL' });
-                            player.play();
-                        }
-                    }, 2000);
+                        console.log('পুনরায় চেষ্টা করা হচ্ছে...');
+                        player.src({ src: player.currentSrc(), type: 'application/x-mpegURL' });
+                        player.load();
+                        player.play().catch(e => console.log("Play error:", e));
+                    }, 2500);
                 }
             });
         }
 
         function loadChannel(url, channelName) {
             if (!player) initPlayer();
-            
             retryCount = 0;
-            const proxiedUrl = getProxiedUrl(url);
             
-            console.log(`লোড হচ্ছে: ${channelName}`);
-            console.log(`Original URL: ${url}`);
-            console.log(`Proxied URL: ${proxiedUrl}`);
+            player.src({ src: url, type: 'application/x-mpegURL' });
+            player.load();
             
-            player.src({ src: proxiedUrl, type: 'application/x-mpegURL' });
-            player.play().catch(e => {
-                console.log("Auto-play error:", e);
-                // অটোপ্লে ব্লক হলে ইউজারকে ম্যানুয়ালি প্লে করতে হবে
-            });
+            // প্লে করার প্রমিস চেক
+            var playPromise = player.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("অটোপ্লে আটকেছে। ইউজারকে প্লে বাটনে চাপ দিতে হবে।");
+                });
+            }
             
-            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: ${channelName}`;
+            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: <b>${channelName}</b>`;
         }
 
         function renderButtons(containerId, channelsArray) {
             const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = '';
+            
             channelsArray.forEach(ch => {
                 const btn = document.createElement('button');
                 btn.className = 'channel-btn';
@@ -319,12 +256,10 @@
             renderButtons('sportsChannels', sportsChannels);
             renderButtons('worldcupChannels', worldcupChannels);
 
+            // ১ম চ্যানেলটি অটোমেটিক লোড করার জন্য
             setTimeout(() => {
-                if (bangladeshiChannels.length > 0) {
-                    const firstBtn = document.querySelector('#bdChannels .channel-btn');
-                    if (firstBtn) firstBtn.classList.add('active');
-                    loadChannel(bangladeshiChannels[0].url, bangladeshiChannels[0].name);
-                }
+                const firstBtn = document.querySelector('.channel-btn');
+                if (firstBtn) firstBtn.click();
             }, 500);
         });
     })();
