@@ -60,7 +60,7 @@
     </main>
 
     <div id="links-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-[#121f32] border border-slate-700 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl animate-fade-in">
+        <div class="bg-[#121f32] border border-slate-700 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl">
             <div class="p-4 bg-[#0b111e] border-b border-slate-800 flex justify-between items-center">
                 <div>
                     <h4 class="font-bold text-lg text-white">Multiple links available</h4>
@@ -88,7 +88,7 @@
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
-        // ⚽ ম্যাচের লাইভ ডাটাবেজ (এখানে আপনার নিজস্ব পাইরেসি/টোকেন লিংকগুলো বসাবেন)
+        // ⚽ ম্যাচের লাইভ ডাটাবেজ
         const matches = [
             {
                 id: 1,
@@ -100,7 +100,6 @@
                 time: "01:00 AM",
                 date: "13/06/2026",
                 status: "Starts in 11 hours",
-                // এই ম্যাচের অধীনে থাকা বিভিন্ন প্রিমিয়াম সার্ভারের লিংক লিস্ট
                 links: [
                     { name: "Fancode (Premium)", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
                     { name: "TSN Sports HD", url: "YOUR_TSN_SPORTS_M3U8_LINK" },
@@ -147,7 +146,6 @@
         const player = videojs('live-player');
         let activeMatch = null;
 
-        // ম্যাচ লিস্ট তৈরি করার ফাংশন
         function loadMatches() {
             const container = document.getElementById('matches-list');
             container.innerHTML = '';
@@ -181,7 +179,6 @@
             });
         }
 
-        // মডাল বা পপ-আপ ওপেন করার ফাংশন (লিংক চয়েসের জন্য)
         function openLinksModal(matchId) {
             const match = matches.find(m => m.id === matchId);
             if (!match) return;
@@ -195,7 +192,7 @@
             match.links.forEach(link => {
                 const btn = document.createElement('button');
                 btn.className = "w-full text-left bg-[#1e2d42] hover:bg-blue-600 hover:text-white p-3 rounded-xl flex items-center justify-between transition font-medium text-sm text-slate-200 border border-slate-700/50";
-                btn.innerHTML = `<span><i class="fa-solid fa-circle-play mr-2 text-blue-400 group-hover:text-white"></i>${link.name}</span> <i class="fa-solid fa-chevron-right text-xs opacity-60"></i>`;
+                btn.innerHTML = `<span><i class="fa-solid fa-circle-play mr-2 text-blue-400"></i>${link.name}</span> <i class="fa-solid fa-chevron-right text-xs opacity-60"></i>`;
                 btn.onclick = () => startStream(link.url, link.name);
                 linksContainer.appendChild(btn);
             });
@@ -203,12 +200,10 @@
             document.getElementById('links-modal').classList.remove('hidden');
         }
 
-        // মডাল বন্ধ করার ফাংশن
         function closeModal() {
-            document.getElementById('links-modal').classTo= document.getElementById('links-modal').classList.add('hidden');
+            document.getElementById('links-modal').classList.add('hidden');
         }
 
-        // প্লেয়ারে স্ট্রিম চালু করার ফাংশন
         function startStream(url, serverName) {
             if (url.includes("YOUR_")) {
                 alert(`দুঃখিত! এই সার্ভারের (${serverName}) লাইভ .m3u8 লিংকটি এখনও আপডেট করা হয়নি।`);
@@ -222,7 +217,6 @@
             closeModal();
         }
 
-        // পেজ লোড হলে ম্যাচগুলো রেন্ডার হবে
         window.onload = loadMatches;
     </script>
 </body>
