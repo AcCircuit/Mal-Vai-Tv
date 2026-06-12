@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Sibli Mal Tv</title>
-    <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -83,7 +82,6 @@
         }
         .footer { text-align: center; color: #5a6a85; font-size: 0.75rem; margin-top: 25px; }
     </style>
-    <!-- Video.js Script -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 </head>
 <body>
@@ -91,7 +89,7 @@
 <div class="container">
     <div class="header">
         <h1>Sibli Mal Tv</h1>
-        <p>লাইভ টিভি চ্যানেল লোড হচ্ছে...</p>
+        <p>🎬 একটি চ্যানেল সিলেক্ট করুন</p>
     </div>
 
     <div class="player-wrapper">
@@ -100,19 +98,17 @@
         </video>
     </div>
 
-    <!-- M3U চ্যানেল লিস্ট -->
     <div class="channels-section">
         <div class="section-title">
-            📺 লাইভ চ্যানেল সমূহ (M3U সোর্স)
+            📺 লাইভ চ্যানেল সমূহ (M3U প্লেলিস্ট)
         </div>
         <div class="channel-grid" id="m3uChannels">
-            <p style="color: #8e9aaf; font-size: 0.9rem; padding: 10px;">M3U প্লেলিস্ট প্রসেস হচ্ছে, দয়া করে কয়েক সেকেন্ড অপেক্ষা করুন...</p>
-        </div>
+            </div>
     </div>
 
     <div class="info-text">
         🔊 ভিডিও চালু হওয়ার পর আওয়াজ না আসলে প্লেয়ারের স্পিকার আইকন থেকে <b>Unmute</b> করে নিন।<br>
-        🔄 কোনো চ্যানেল বাফারিং করলে বা না চললে অন্য চ্যানেল ট্রাই করুন।
+        🔄 কোনো চ্যানেল বাফারিং করলে বা "Media could not be loaded" দেখালে অন্য বাটন ট্রাই করুন।
     </div>
     
     <div class="footer">
@@ -122,8 +118,16 @@
 
 <script>
     (function() {
-        // গ্লোবাল অটো-আপডেটেড .m3u প্লেলিস্ট লিংক (বাংলাদেশ ও আন্তর্জাতিক মিক্সড)
-        const M3U_PLAYLIST_URL = "https://raw.githubusercontent.com/iptv-org/iptv/master/playlists/playlist.m3u";
+        // লোকাল ফাইলে জাতে ইন্টারফেস না হারায়, তাই ডিরেক্ট লিংক সেট করে দেওয়া হলো
+        const staticChannels = [
+            { name: "সময় টিভি (সরাসরি)", url: "https://stream.somoynews.tv/somoytv/somoytv.smil/playlist.m3u8" },
+            { name: "যমুনা টিভি", url: "https://jamuna.m3u8.live/hls/stream.m3u8" },
+            { name: "ডিবিসি নিউজ", url: "https://dbc.m3u8.live/live/stream.m3u8" },
+            { name: "একাত্তর টিভি", url: "https://ekattor.m3u8.live/hls/ekattor.m3u8" },
+            { name: "টি স্পোর্টস ফিড", url: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" },
+            { name: "লাইভ স্পোর্টস ২", url: "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" },
+            { name: "ফিফা স্ট্রিম (Alt)", url: "https://demo.unified-streaming.com/kaltura/smil:tears-of-steel.smil/playlist.m3u8" }
+        ];
         
         let player = null;
 
@@ -146,66 +150,38 @@
             document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: <b>${channelName}</b>`;
         }
 
-        // M3U ফাইল রিড এবং বাটন বানানোর ফাংশন
-        async function parseM3U() {
-            try {
-                const response = await fetch(M3U_PLAYLIST_URL);
-                const text = await response.text();
+        function renderButtons() {
+            const container = document.getElementById('m3uChannels');
+            container.innerHTML = ''; // রিফ্রেশ
+
+            staticChannels.forEach((ch, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'channel-btn';
+                btn.innerText = ch.name;
+                btn.onclick = () => {
+                    document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadChannel(ch.url, ch.name);
+                };
+                container.appendChild(btn);
                 
-                const lines = text.split('\n');
-                const channels = [];
-                let currentName = "";
-
-                // M3U টেক্সট অ্যানালাইসিস করা
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (line.startsWith('#EXTINF:')) {
-                        // চ্যানেলের নাম খুঁজে বের করা
-                        const nameMatch = line.match(/,(.+)$/);
-                        if (nameMatch) {
-                            currentName = nameMatch[1].trim();
-                        }
-                    } else if (line.startsWith('http')) {
-                        // চ্যানেলের m3u8 লিংক খুঁজে বের করা
-                        if (currentName) {
-                            channels.push({ name: currentName, url: line });
-                            currentName = ""; // রিসেট
-                        }
-                    }
+                // প্রথম বাটনটি অটোমেটিক অ্যাক্টিভ করার জন্য
+                if(index === 0) {
+                    btn.classList.add('active');
                 }
-
-                const container = document.getElementById('m3uChannels');
-                container.innerHTML = ''; // লোডিং টেক্সট মুছে ফেলা
-
-                // প্রথম ২৫টি সচল চ্যানেল প্রদর্শন (ব্রাউজার ক্র্যাশ এড়াতে লিমিটেড করা)
-                const displayChannels = channels.slice(0, 25);
-
-                displayChannels.forEach(ch => {
-                    const btn = document.createElement('button');
-                    btn.className = 'channel-btn';
-                    btn.innerText = ch.name.length > 20 ? ch.name.substring(0, 20) + '...' : ch.name;
-                    btn.onclick = () => {
-                        document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        loadChannel(ch.url, ch.name);
-                    };
-                    container.appendChild(btn);
-                });
-
-                // ১ম চ্যানেলটি অটো-প্লে করা
-                if (displayChannels.length > 0) {
-                    container.querySelector('.channel-btn').click();
-                }
-
-            } catch (error) {
-                console.log("M3U Load Error:", error);
-                document.getElementById('m3uChannels').innerHTML = "<p style='color:orange; padding:10px;'>প্লেলিস্ট লোড করতে সমস্যা হচ্ছে। দয়া করে পেজটি রিফ্রেশ দিন।</p>";
-            }
+            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             initPlayer();
-            parseM3U();
+            renderButtons();
+            
+            // প্রথম চ্যানেলটি অটোমেটিক প্লে করার চেষ্টা
+            setTimeout(() => {
+                if(staticChannels.length > 0) {
+                    loadChannel(staticChannels[0].url, staticChannels[0].name);
+                }
+            }, 500);
         });
     })();
 </script>
