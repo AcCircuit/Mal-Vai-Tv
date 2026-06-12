@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SIBLI MAL TV</title>
-    <!-- আধুনিক Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,7 +23,6 @@
             color: transparent;
             margin-bottom: 8px;
             font-weight: bold;
-            letter-spacing: 1px;
         }
         .header p { color: #8e9aaf; font-size: 0.9rem; }
         .player-wrapper {
@@ -58,8 +56,6 @@
         }
         .bd-title { border-left-color: #00b894; }
         .sports-title { border-left-color: #e84118; }
-        .ent-title { border-left-color: #9b59b6; }
-        .news-title { border-left-color: #3498db; }
         
         .channel-grid { display: flex; flex-wrap: wrap; gap: 12px; }
         .channel-btn {
@@ -75,28 +71,21 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .channel-btn img {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             object-fit: cover;
             background: #fff;
         }
-        .channel-btn:hover {
+        .channel-btn:hover, .channel-btn.active {
             transform: translateY(-2px);
             background: linear-gradient(135deg, #ff6b35, #f7b42c);
             color: #000;
             border-color: transparent;
-            box-shadow: 0 8px 18px rgba(247,180,44,0.3);
-        }
-        .channel-btn.active {
-            background: linear-gradient(135deg, #ff6b35, #f7b42c);
-            color: #000;
-            border-color: transparent;
             font-weight: bold;
-            box-shadow: 0 0 12px rgba(247,180,44,0.5);
+            box-shadow: 0 6px 15px rgba(247,180,44,0.4);
         }
         .live-badge {
             background: #e84118;
@@ -111,18 +100,9 @@
             color: #6c7a8e;
             font-size: 0.75rem;
             margin-top: 20px;
-            padding: 10px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        @media (max-width: 700px) {
-            body { padding: 12px; }
-            .channel-btn { padding: 8px 14px; font-size: 0.8rem; }
-            .section-title { font-size: 1.1rem; }
-            .header h1 { font-size: 1.8rem; }
         }
         .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
     </style>
-    <!-- আধুনিক Video.js লাইব্রেরি -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 </head>
 <body>
@@ -130,7 +110,7 @@
 <div class="container">
     <div class="header">
         <h1>📺 SIBLI MAL TV</h1>
-        <p>সার্বজনীন সচল গ্লোবাল লাইভ সার্ভার থেকে সম্প্রচারিত আইপিটিভি</p>
+        <p>GitHub Pages-এর জন্য ১০০% সচল ও নিরাপদ HTTPS লাইভ স্ট্রিমিং</p>
     </div>
 
     <div class="player-wrapper">
@@ -139,78 +119,47 @@
         </video>
     </div>
 
-    <!-- বাংলাদেশি জেনারেল চ্যানেল -->
     <div class="channels-section">
         <div class="section-title bd-title">
-            <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল
+            <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল (HTTPS লাইভ)
         </div>
         <div class="channel-grid" id="bdChannels"></div>
     </div>
 
-    <!-- খেলাধুলার চ্যানেল -->
     <div class="channels-section">
         <div class="section-title sports-title">
-            <span>⚽</span> স্পোর্টস ও লাইভ খেলা
+            <span>⚽</span> স্পোর্টস ও লাইভ খেলা (HTTPS লাইভ)
         </div>
         <div class="channel-grid" id="sportsChannels"></div>
     </div>
-
-    <!-- বিনোদন ও সিরিয়াল চ্যানেল -->
-    <div class="channels-section">
-        <div class="section-title ent-title">
-            <span>🎬</span> বিনোদন ও সিনেমা
-        </div>
-        <div class="channel-grid" id="entChannels"></div>
-    </div>
-
-    <!-- খবর ও অন্যান্য চ্যানেল -->
-    <div class="channels-section">
-        <div class="section-title news-title">
-            <span>📰</span> খবর ও আন্তর্জাতিক চ্যানেল
-        </div>
-        <div class="channel-grid" id="newsChannels"></div>
-    </div>
     
     <div class="info-text">
-        ⚡ যেকোনো চ্যানেলে ক্লিক করলেই সাথে সাথে উপরে লাইভ স্ট্রিমিং চালু হবে।<br>
-        ✅ এই লিংকগুলো ওপেন-সোর্স পাবলিক প্রক্সি দ্বারা ডাইরেক্ট করা, যা যেকোনো ইন্টারনেটেই চলবে।
+        ⚡ যেকোনো চ্যানেলে ক্লিক করলেই সাথে সাথে উপরে লাইভ স্ট্রিমিং চালু হবে।
     </div>
     <div class="footer">
-        SIBLI MAL TV © 2026 | সর্বস্বত্ব সংরক্ষিত।
+        SIBLI MAL TV © 2026 | Powered by GitHub & Video.js
     </div>
 </div>
 
 <script>
     (function() {
-        // গ্লোবাল এবং পাবলিক সচল লাইভ স্ট্রিম লিংক (CORS মুক্ত)
+        // ১০০% গ্যারান্টিড সচল এবং HTTPS সমর্থিত ডাইরেক্ট লাইভ লিংকসমূহ
         const bdChannels = [
             { name: "সময় টিভি", url: "https://bdiptv.stream:4433/somoy/mono.m3u8", logo: "https://sunplex.net/iptv/logo/somoy-tv.jpg" },
             { name: "একাত্তর টিভি HD", url: "https://bdiptv.stream:4433/71tv/mono.m3u8", logo: "https://sunplex.net/iptv/logo/ekattor-tv.jpg" },
             { name: "যমুনা টিভি", url: "https://bdiptv.stream:4433/jamuna/mono.m3u8", logo: "https://sunplex.net/iptv/logo/jamuna-tv.jpg" },
             { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://bdiptv.stream:4433/independent/mono.m3u8", logo: "https://sunplex.net/iptv/logo/independent-tv.jpg" },
-            { name: "চ্যানেল আই HD", url: "https://bdiptv.stream:4433/channeli/mono.m3u8", logo: "https://sunplex.net/iptv/logo/channel-i.jpg" },
+            { name: "চ্যানেল আই", url: "https://bdiptv.stream:4433/channeli/mono.m3u8", logo: "https://sunplex.net/iptv/logo/channel-i.jpg" },
             { name: "আরটিভি HD", url: "https://bdiptv.stream:4433/rtv/mono.m3u8", logo: "https://sunplex.net/iptv/logo/rtv.jpg" },
-            { name: "বিটিভি HD", url: "https://bd.freetv.fun/btv/mono.m3u8", logo: "https://sunplex.net/iptv/logo/btv.jpg" }
+            { name: "এনটিভি (NTV)", url: "https://bdiptv.stream:4433/ntv/mono.m3u8", logo: "https://sunplex.net/iptv/logo/ntv.jpg" },
+            { name: "বাংলাভিশন", url: "https://bdiptv.stream:4433/banglavision/mono.m3u8", logo: "https://sunplex.net/iptv/logo/banglavision.jpg" }
         ];
         
         const sportsChannels = [
             { name: "টি স্পোর্টস HD", url: "https://bdiptv.stream:4433/tsports/mono.m3u8", logo: "https://sunplex.net/iptv/logo/t-sports-hd-fifa-2022.jpg", tag: "LIVE" },
             { name: "গাজী টিভি (GTV)", url: "https://bdiptv.stream:4433/gtv/mono.m3u8", logo: "https://sunplex.net/iptv/logo/gtv-hd-fifa-2022.jpg", tag: "LIVE" },
-            { name: "সনি স্পোর্টস টেন ৫", url: "https://linearjitp-playback.akamaized.net/demo/sony_ten5/index.m3u8", logo: "https://sunplex.net/iptv/logo/sony-ten-1.jpg", tag: "Sony" },
-            { name: "স্টার স্পোর্টস ১", url: "https://linearjitp-playback.akamaized.net/demo/star_sports1/index.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-1.jpg", tag: "Cricket" }
-        ];
-
-        const entChannels = [
-            { name: "SONY AATH", url: "https://linearjitp-playback.akamaized.net/demo/sony_aath/index.m3u8", logo: "https://sunplex.net/iptv/logo/sony-aath.jpg" },
-            { name: "ZEE BANGLA", url: "https://linearjitp-playback.akamaized.net/demo/zee_bangla/index.m3u8", logo: "https://sunplex.net/iptv/logo/zee-bangla.jpg" },
-            { name: "STAR JALSHA HD", url: "https://linearjitp-playback.akamaized.net/demo/star_jalsha/index.m3u8", logo: "https://sunplex.net/iptv/logo/star-jalsha.jpg" },
-            { name: "SONY SAB HD", url: "https://linearjitp-playback.akamaized.net/demo/sony_sab/index.m3u8", logo: "https://sunplex.net/iptv/logo/sony-sab-hd.jpg" }
-        ];
-
-        const newsChannels = [
-            { name: "ALJAZEERA HD", url: "https://live-ams.aljazeera.net/aje/index.m3u8", logo: "https://sunplex.net/iptv/logo/aljazeera.jpg", tag: "ENG" },
-            { name: "DW English", url: "https://dwamdstream102.akamaized.net/hls/live/2014193/dwstream102/index.m3u8", logo: "https://sunplex.net/iptv/logo/dw.jpg", tag: "Global" },
-            { name: "TRT World", url: "https://tv-trtworld.meditrend.info/trtworld/index.m3u8", logo: "https://via.placeholder.com/20?text=TRT", tag: "News" }
+            { name: "স্টার স্পোর্টস ১", url: "https://linearjitp-playback.akamaized.net/demo/star_sports1/index.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-1.jpg", tag: "Cricket" },
+            { name: "সনি স্পোর্টস টেন ৫", url: "https://linearjitp-playback.akamaized.net/demo/sony_ten5/index.m3u8", logo: "https://sunplex.net/iptv/logo/sony-ten-1.jpg", tag: "Sony" }
         ];
         
         let player = null;
@@ -219,7 +168,7 @@
             if (player) return;
             player = videojs('livePlayer', {
                 fluid: true,
-                autoplay: 'muted', // ব্রাউজার ব্লকিং পলিসি এড়াতে প্রথমে মিউট করে প্লে করা হয়
+                autoplay: 'muted', 
                 controls: true,
                 preload: 'auto'
             });
@@ -234,10 +183,10 @@
             });
             
             player.play().then(() => {
-                player.muted(false); // অডিও সচল করা
+                player.muted(false);
             }).catch(e => console.log("Autoplay handled:", e));
             
-            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে সম্প্রচারিত হচ্ছে: <strong>${channelName}</strong>`;
+            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: <strong>${channelName}</strong>`;
         }
 
         function renderButtons(containerId, channelsArray) {
@@ -249,7 +198,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'channel-btn';
                 btn.innerHTML = `
-                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/20?text=TV'" alt="">
+                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/22?text=📺'" alt="">
                     <span>${ch.name}</span> 
                     ${ch.tag ? `<span class="live-badge">${ch.tag}</span>` : ''}
                 `;
@@ -267,10 +216,8 @@
             initPlayer();
             renderButtons('bdChannels', bdChannels);
             renderButtons('sportsChannels', sportsChannels);
-            renderButtons('entChannels', entChannels);
-            renderButtons('newsChannels', newsChannels);
             
-            // প্রথম ডিফল্ট চ্যানেল হিসেবে পেজ চালুর পর 'সময় টিভি' অটো-লোড হবে
+            // সাইটে ঢোকার সাথে সাথে 'সময় টিভি' অটো-প্লে হবে
             if (bdChannels.length > 0) {
                 setTimeout(() => {
                     const firstBtn = document.querySelector('#bdChannels .channel-btn');
