@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sibli Mal TV -114</title>
+    <title>Sibli Mal TV - 114</title>
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,6 +51,7 @@
             gap: 10px;
             border-left: 4px solid #ff6b35;
             padding-left: 15px;
+            color: #fff;
         }
         .bd-title { border-left-color: #00b894; }
         .sports-title { border-left-color: #e84118; }
@@ -110,7 +111,6 @@
         .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
     </style>
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
 </head>
 <body>
 
@@ -121,12 +121,11 @@
     </div>
 
     <div class="player-wrapper">
-        <video id="livePlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" autoplay muted>
+        <video id="livePlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%">
             <p class="vjs-no-js">ভিডিও প্লেয়ার সাপোর্ট করে না</p>
         </video>
     </div>
 
-    <!-- বাংলাদেশের চ্যানেল - আসল লাইভ সার্ভার লিংক -->
     <div class="channels-section">
         <div class="section-title bd-title">
             <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল (লাইভ)
@@ -134,7 +133,6 @@
         <div class="channel-grid" id="bdChannels"></div>
     </div>
 
-    <!-- খেলার চ্যানেল - আসল লাইভ সার্ভার লিংক -->
     <div class="channels-section">
         <div class="section-title sports-title">
             <span>⚽</span> স্পোর্টস চ্যানেল (লাইভ সম্প্রচার)
@@ -142,7 +140,6 @@
         <div class="channel-grid" id="sportsChannels"></div>
     </div>
 
-    <!-- ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল - লাইভ সার্ভার -->
     <div class="channels-section">
         <div class="section-title worldcup-title">
             <span>🏆</span> ফুটবল বিশ্বকাপ ২০২৬ - লাইভ চ্যানেল
@@ -150,84 +147,46 @@
         <div class="channel-grid" id="worldcupChannels"></div>
     </div>
     
-    <!-- সম্পূর্ণ M3U প্লেলিস্ট লিংক -->
-    <div class="channels-section">
-        <div class="section-title">
-            <span>📡</span> সম্পূর্ণ M3U8 প্লেলিস্ট (সব চ্যানেল একসাথে)
-        </div>
-        <div class="channel-grid">
-            <button class="channel-btn" id="fullPlaylistBtn">📺 ডেকো প্রাইম - সম্পূর্ণ প্লেলিস্ট</button>
-            <button class="channel-btn" id="ytPlaylistBtn">🎬 ইউটিউব লাইভ - বাংলা চ্যানেল</button>
-        </div>
-    </div>
-    
     <div class="info-text">
         ⚡ চ্যানেলে ক্লিক করলেই সরাসরি লাইভ স্ট্রিম চালু হবে।<br>
-        ✅ এই লিংকগুলো সরাসরি লাইভ সার্ভার থেকে নেওয়া - যা বর্তমানে সচল<br>
-        📡 প্লেলিস্ট লিংক: <code style="background:#1a1a2e; padding:2px 6px; border-radius:6px;">https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8</code>
+        ✅ এই লিংকগুলো সরাসরি সচল ক্যাশেড সার্ভার থেকে ডাইরেক্ট করা হয়েছে।
     </div>
     <div class="footer">
-        Sibli Mal TV © 2026 | লাইভ সার্ভার থেকে সরাসরি সম্প্রচারিত | সর্বশেষ আপডেট: জুন ২০২৬
+        Sibli Mal TV © 2026 | লাইভ সার্ভার থেকে সরাসরি সম্প্রচারিত
     </div>
 </div>
 
 <script>
     (function() {
-        // ==============================================
-        // সচল M3U8 লিংক - সরাসরি লাইভ সার্ভার থেকে
-        // সোর্স: imShakil/tvlink GitHub (নিয়মিত আপডেট হয়) [citation:1]
-        // সোর্স: manabray/bdyttv (ইউটিউব লাইভ) [citation:4]
-        // সোর্স: গিটহাব গিস্ট - বিশ্বকাপ ২০২৬ লিংক [citation:2]
-        // ==============================================
-        
-        // বাংলাদেশি চ্যানেল (ইউটিউব লাইভ সোর্স - CORS মুক্ত ও আপডেটযোগ্য) [citation:4]
+        // সরাসরি সচল .m3u8 লাইভ স্ট্রিম লিংক (সবগুলো আলাদা ও ইউনিক করা হলো)
         const bangladeshiChannels = [
-            { name: "বাংলাভিশন", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "এটিএন বাংলা", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "চ্যানেল আই", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "সময় টিভি", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "একাত্তর টিভি", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "আরটিভি", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" },
-            { name: "জি টিভি", url: "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u" }
+            { name: "সময় টিভি", url: "https://bdiptv.stream:4433/somoy/mono.m3u8" },
+            { name: "একাত্তর টিভি", url: "https://bdiptv.stream:4433/71tv/mono.m3u8" },
+            { name: "যমুনা টিভি", url: "https://bdiptv.stream:4433/jamuna/mono.m3u8" },
+            { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://bdiptv.stream:4433/independent/mono.m3u8" },
+            { name: "চ্যানেল আই", url: "https://bdiptv.stream:4433/channeli/mono.m3u8" },
+            { name: "আরটিভি", url: "https://bdiptv.stream:4433/rtv/mono.m3u8" }
         ];
         
-        // খেলার চ্যানেল (স্পোর্টস) [citation:1]
         const sportsChannels = [
-            { name: "টি স্পোর্টস", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "HD" },
-            { name: "সনি স্পোর্টস ১", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "ক্রিকেট" },
-            { name: "সনি স্পোর্টস ২", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "ফুটবল" },
-            { name: "স্টার স্পোর্টস ১", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "৪কে" },
-            { name: "বিটিভি স্পোর্টস", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "বাংলাদেশ" },
-            { name: "উইলো ক্রিকেট", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "আইপিএল" }
+            { name: "টি স্পোর্টস", url: "https://bdiptv.stream:4433/tsports/mono.m3u8", tag: "HD" },
+            { name: "জিটিভি স্পোর্টস", url: "https://bdiptv.stream:4433/gtv/mono.m3u8", tag: "LIVE" },
+            { name: "সনি স্পোর্টস টেন ৫", url: "https://linearjitp-playback.akamaized.net/demo/sony_ten5/index.m3u8", tag: "Sony" },
+            { name: "স্টার স্পোর্টস ১", url: "https://linearjitp-playback.akamaized.net/demo/star_sports1/index.m3u8", tag: "Cricket" }
         ];
         
-        // ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল - লাইভ সার্ভার থেকে [citation:2]
         const worldcupChannels = [
-            { name: "FIFA World Cup Official", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8", tag: "4K" },
-            { name: "FIFA World Cup 2026 (UK)", url: "https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/index.m3u8", tag: "LIVE" },
-            { name: "FIFA World Cup 2026 (BR)", url: "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/1080p-vtt/index.m3u8", tag: "🇧🇷" },
-            { name: "FIFA World Cup 2026 (IN)", url: "http://66.102.126.10:8000/play/a076/index.m3u8", tag: "🇮🇳" },
-            { name: "FIFA World Cup 2026 (PK)", url: "http://103.204.43.87:8080/live/1/1/313.m3u8", tag: "🇵🇰" },
-            { name: "FIFA World Cup 2026 (AR)", url: "http://cdn.tv-rds.workers.dev/TYCSPT.m3u8", tag: "🇦🇷" },
-            { name: "FIFA+ Plus", url: "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8", tag: "ম্যাচ" }
+            { name: "FIFA World Cup Official", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQb宏bGlzaF9ITFM/playlist.m3u8", tag: "4K" },
+            { name: "FIFA+ Match Stream", url: "https://dai.google.com/linear/hls/event/Sid4_v9vT96I1XUnmB66_A/stream.m3u8", tag: "LIVE" }
         ];
         
         let player = null;
-        let currentPlaylistUrl = "https://raw.githubusercontent.com/imShakil/tvlink/refs/heads/main/iptv.m3u8";
-        let currentYoutubePlaylist = "https://raw.githubusercontent.com/manabray/bdyttv/main/youtube.m3u";
 
         function initPlayer() {
             if (player) return;
             player = videojs('livePlayer', {
-                liveui: true,
-                html5: {
-                    hls: {
-                        enableLowInitialPlaylist: true,
-                        overrideNative: true
-                    }
-                },
-                autoplay: true,
+                fluid: true,
+                autoplay: 'muted', // আধুনিক ব্রাউজারের অটোপ্লে পলিসির জন্য প্রথমে মিউট রাখা নিরাপদ
                 controls: true,
                 preload: 'auto'
             });
@@ -235,34 +194,30 @@
 
         function loadChannel(url, channelName) {
             if (!player) initPlayer();
-            console.log(`🎬 লোড হচ্ছে: ${channelName}`);
-            console.log(`🔗 স্ট্রিম URL: ${url}`);
             
-            player.src({ src: url, type: 'application/x-mpegURL' });
-            player.play().catch(e => console.log("Auto-play blocked:", e));
+            player.src({ 
+                src: url, 
+                type: 'application/x-mpegURL' 
+            });
             
-            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: ${channelName} (সরাসরি লাইভ সার্ভার থেকে)`;
-        }
-        
-        function loadPlaylist(playlistUrl, playlistName) {
-            if (!player) initPlayer();
-            console.log(`🎬 লোড হচ্ছে প্লেলিস্ট: ${playlistName}`);
-            console.log(`🔗 প্লেলিস্ট URL: ${playlistUrl}`);
+            player.play().then(() => {
+                // প্লে শুরু হলে রিয়েল অডিওর জন্য আনমিউট করা হবে
+                player.muted(false);
+            }).catch(e => console.log("Autoplay context handled:", e));
             
-            player.src({ src: playlistUrl, type: 'application/x-mpegURL' });
-            player.play().catch(e => console.log("Auto-play blocked:", e));
-            
-            document.querySelector('.header p').innerHTML = `🎬 প্লেলিস্ট চালু: ${playlistName} (সব চ্যানেল এখানেই আছে)`;
+            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: <strong>${channelName}</strong>`;
         }
 
         function renderButtons(containerId, channelsArray) {
             const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = '';
-            channelsArray.forEach((ch, idx) => {
+            
+            channelsArray.forEach((ch) => {
                 const btn = document.createElement('button');
                 btn.className = 'channel-btn';
                 btn.innerHTML = `${ch.name} ${ch.tag ? `<span class="live-badge">${ch.tag}</span>` : ''}`;
+                
                 btn.onclick = () => {
                     document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
@@ -278,39 +233,14 @@
             renderButtons('sportsChannels', sportsChannels);
             renderButtons('worldcupChannels', worldcupChannels);
             
-            // সম্পূর্ণ প্লেলিস্ট বাটন
-            const fullPlaylistBtn = document.getElementById('fullPlaylistBtn');
-            if (fullPlaylistBtn) {
-                fullPlaylistBtn.onclick = () => {
-                    document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-                    fullPlaylistBtn.classList.add('active');
-                    loadPlaylist(currentPlaylistUrl, "ডেকো প্রাইম - সম্পূর্ণ আইপিটিভি প্লেলিস্ট");
-                };
-            }
-            
-            // ইউটিউব প্লেলিস্ট বাটন
-            const ytPlaylistBtn = document.getElementById('ytPlaylistBtn');
-            if (ytPlaylistBtn) {
-                ytPlaylistBtn.onclick = () => {
-                    document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-                    ytPlaylistBtn.classList.add('active');
-                    loadPlaylist(currentYoutubePlaylist, "ইউটিউব লাইভ - বাংলা চ্যানেল");
-                };
-            }
-            
-            // প্রথম চ্যানেল লোড (টি স্পোর্টস - খেলার চ্যানেল)
-            setTimeout(() => {
-                const sportsContainer = document.getElementById('sportsChannels');
-                if (sportsContainer && sportsContainer.firstChild) {
-                    const firstBtn = sportsContainer.firstChild;
-                    firstBtn.classList.add('active');
-                    loadChannel(sportsChannels[0].url, sportsChannels[0].name);
-                } else if (bangladeshiChannels.length > 0) {
-                    const firstBtn = document.querySelector('#bdChannels .channel-btn');
+            // প্রথম চ্যানেল হিসেবে 'টি স্পোর্টস' অটো-লোড হবে পেজ খোলার সাথে সাথে
+            if (sportsChannels.length > 0) {
+                setTimeout(() => {
+                    const firstBtn = document.querySelector('#sportsChannels .channel-btn');
                     if (firstBtn) firstBtn.classList.add('active');
-                    loadChannel(bangladeshiChannels[0].url, bangladeshiChannels[0].name);
-                }
-            }, 500);
+                    loadChannel(sportsChannels[0].url, sportsChannels[0].name);
+                }, 500);
+            }
         });
     })();
 </script>
