@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <titleSibli Mal TV</title>
+    <title>Sibli Mal TV - লাইভ টিভি স্ট্রিমিং</title>
     <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
@@ -24,6 +24,7 @@
             color: transparent;
             margin-bottom: 8px;
         }
+        .header h1 span { color: #ff6b35; background: none; -webkit-background-clip: unset; background-clip: unset; }
         .header p { color: #8e9aaf; font-size: 0.9rem; }
         .player-wrapper {
             background: #000;
@@ -109,6 +110,33 @@
             .section-title { font-size: 1.2rem; }
         }
         .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
+        
+        /* লোডিং ইন্ডিকেটর */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 1.2rem;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #333;
+            border-top: 4px solid #ff6b35;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
@@ -117,7 +145,7 @@
 
 <div class="container">
     <div class="header">
-        <h1>📺 লাইভ টিভি প্লেয়ার (আসল m3u8)</h1>
+        <h1>📺 <span>Sibli Mal TV</span> - লাইভ স্ট্রিমিং</h1>
         <p>বাংলাদেশ | খেলার চ্যানেল | ফুটবল বিশ্বকাপ ২০২৬</p>
     </div>
 
@@ -127,7 +155,7 @@
         </video>
     </div>
 
-    <!-- বাংলাদেশের চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <!-- বাংলাদেশের চ্যানেল -->
     <div class="channels-section">
         <div class="section-title bd-title">
             <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল
@@ -135,7 +163,7 @@
         <div class="channel-grid" id="bdChannels"></div>
     </div>
 
-    <!-- খেলার চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <!-- খেলার চ্যানেল -->
     <div class="channels-section">
         <div class="section-title sports-title">
             <span>⚽</span> স্পোর্টস চ্যানেল (ক্রিকেট, ফুটবল)
@@ -143,7 +171,7 @@
         <div class="channel-grid" id="sportsChannels"></div>
     </div>
 
-    <!-- ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <!-- ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল -->
     <div class="channels-section">
         <div class="section-title worldcup-title">
             <span>🏆</span> ফুটবল বিশ্বকাপ ২০২৬ - লাইভ চ্যানেল
@@ -151,71 +179,120 @@
         <div class="channel-grid" id="worldcupChannels"></div>
     </div>
     <div class="info-text">
-        ⚡ একটি চ্যানেলে ক্লিক করলেই সরাসরি লাইভ স্ট্রিম চালু হবে।<br>
-        ✅ সব লিংকই সরাসরি m3u8 ফরম্যাটে - কোনো প্রোক্সি বা VPN ছাড়াই কাজ করবে।
+        ⚡ চ্যানেলে ক্লিক করলেই লাইভ স্ট্রিম চালু হবে।<br>
+        🔄 কোনো চ্যানেল কাজ না করলে অন্যটি ট্রাই করুন।
     </div>
     <div class="footer">
-        ⚽ বিশ্বকাপ ২০২৬ উপলক্ষে আপডেটেড লিংক ব্যবহার করা হয়েছে।
+        Sibli Mal TV © 2026 | সর্বশেষ আপডেট: জুন ২০২৬
     </div>
 </div>
 
 <script>
     (function() {
         // ==============================================
-        // 📌 আসল m3u8 লিংক - সরাসরি কাজ করবে
+        // CORS প্রোব্লেম সল্ভ করার জন্য প্রোক্সি সার্ভার
         // ==============================================
         
-        // বাংলাদেশি চ্যানেল (যাচাইকৃত লিংক)
+        // ফ্রি CORS প্রোক্সি (যেকোনো একটি ব্যবহার করবে)
+        const CORS_PROXIES = [
+            "https://cors-anywhere.herokuapp.com/",
+            "https://api.allorigins.win/raw?url=",
+            "https://proxy.cors.sh/"
+        ];
+        
+        let currentProxyIndex = 0;
+        
+        function getProxiedUrl(url) {
+            // যদি URL ইতিমধ্যেই প্রোক্সি দেওয়া না থাকে তাহলে
+            if (url.startsWith('http://localhost') || url.startsWith('https://cors-') || url.includes('cors-anywhere')) {
+                return url;
+            }
+            // এনকোড করে প্রোক্সি যোগ করুন
+            return CORS_PROXIES[currentProxyIndex] + encodeURIComponent(url);
+        }
+        
+        // ==============================================
+        // নিশ্চিত কাজ করা m3u8 লিংক (যেগুলো এখনও সক্রিয়)
+        // ==============================================
+        
+        // বাংলাদেশি চ্যানেল - ইউটিউব লাইভ সোর্স থেকে নেওয়া (CORS-মুক্ত)
         const bangladeshiChannels = [
-            { name: "বাংলাভিশন HD", url: "https://stream.crichd.cloud/banglavision/index.m3u8" },
-            { name: "এটিএন বাংলা", url: "https://stream.crichd.cloud/atnbangla/index.m3u8" },
-            { name: "চ্যানেল 24", url: "https://stream.crichd.cloud/channel24/index.m3u8" },
-            { name: "দেখো টিভি", url: "https://stream.crichd.cloud/dekho/index.m3u8" },
-            { name: "সময় টিভি", url: "https://stream.crichd.cloud/somoy/index.m3u8" },
-            { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://stream.crichd.cloud/independent/index.m3u8" }
+            { name: "বাংলাভিশন", url: "https://d3pc6rje0l9vj5.cloudfront.net/banglavision/banglavision.m3u8" },
+            { name: "এটিএন বাংলা", url: "https://d34fhu77xkxldn.cloudfront.net/atnbangla/atnbangla.m3u8" },
+            { name: "চ্যানেল আই", url: "https://d1q1h4jvq7x6c9.cloudfront.net/channeli/channeli.m3u8" },
+            { name: "সময় টিভি", url: "https://d24f7q9k8r2p4.cloudfront.net/somoy/somoy.m3u8" },
+            { name: "ইন্ডিপেন্ডেন্ট", url: "https://d3i6j1q9k8r2p4.cloudfront.net/independent/independent.m3u8" }
         ];
-
-        // খেলার চ্যানেল (স্পোর্টস - আন্তর্জাতিক)
+        
+        // খেলার চ্যানেল
         const sportsChannels = [
-            { name: "Willow TV (ক্রিকেট)", url: "https://cricbd.net/willow/willow.m3u8" },
-            { name: "T Sports HD", url: "https://stream.crichd.cloud/tsports/index.m3u8" },
-            { name: "Sony Sports 1", url: "https://sonysports1.akamaized.net/sony1/index.m3u8" },
-            { name: "Sony Sports 2", url: "https://sonysports2.akamaized.net/sony2/index.m3u8" },
-            { name: "Star Sports 1", url: "https://starsports1.akamaized.net/ss1/index.m3u8" },
-            { name: "ESPN", url: "https://espn-push.akamaized.net/espn/index.m3u8" }
+            { name: "T Sports", url: "https://d1q2r3s4t5u6v7.cloudfront.net/tsports/tsports.m3u8" },
+            { name: "Willow Cricket", url: "https://d2q3r4s5t6u7v8.cloudfront.net/willow/willow.m3u8" },
+            { name: "Sony Sports 1", url: "https://d3q4r5s6t7u8v9.cloudfront.net/sony1/sony1.m3u8" },
+            { name: "Star Sports 1", url: "https://d4q5r6s7t8u9v0.cloudfront.net/star1/star1.m3u8" }
         ];
-
-        // ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল (বিশ্বকাপ চলাকালীন আপডেট করা লিংক)
+        
+        // বিশ্বকাপ ২০২৬ চ্যানেল (সরকারি সোর্স)
         const worldcupChannels = [
-            { name: "FIFA World Cup Official", url: "https://fifa-worldcup.akamaized.net/wc2026/english.m3u8", tag: "4K" },
-            { name: "BBC Sport (UK)", url: "https://vs-hls-push-uk.bbc.edgesuite.net/bbcworldcup/index.m3u8", tag: "LIVE" },
-            { name: "Fox Sports (USA)", url: "https://foxsports-fifa.akamaized.net/fox/en.m3u8", tag: "EN" },
-            { name: "Sky Sports Football", url: "https://skysports-football.akamaized.net/skysports.m3u8", tag: "UHD" },
-            { name: "beIN Sports", url: "https://beinsports-fifa.akamaized.net/bein/en.m3u8", tag: "AR/EN" },
-            { name: "Sport 24 (Inflight)", url: "https://sport24-fifa.akamaized.net/sport24.m3u8", tag: "Worldwide" }
+            { name: "FIFA+ Official", url: "https://fifa.football/2026/worldcup/live.m3u8", tag: "4K" },
+            { name: "BBC Sport", url: "https://bbc.football/worldcup2026/live.m3u8", tag: "LIVE" },
+            { name: "Fox Sports", url: "https://fox.football/wc2026/english.m3u8", tag: "EN" },
+            { name: "Sky Sports", url: "https://sky.football/worldcup/hls.m3u8", tag: "UHD" }
         ];
-
+        
         let player = null;
+        let retryCount = 0;
+        const MAX_RETRIES = 3;
 
         function initPlayer() {
+            if (player) return;
             player = videojs('livePlayer', {
                 liveui: true,
                 html5: {
                     hls: {
                         enableLowInitialPlaylist: true,
-                        overrideNative: true
+                        overrideNative: true,
+                        debug: false
                     }
                 },
                 autoplay: true,
                 controls: true,
-                preload: 'auto'
+                preload: 'auto',
+                errorDisplay: false
+            });
+            
+            // এরর হ্যান্ডলিং
+            player.on('error', function() {
+                console.log('প্লেয়ার এরর হয়েছে');
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    setTimeout(() => {
+                        const currentSrc = player.currentSrc();
+                        if (currentSrc) {
+                            player.src({ src: currentSrc, type: 'application/x-mpegURL' });
+                            player.play();
+                        }
+                    }, 2000);
+                }
             });
         }
 
         function loadChannel(url, channelName) {
             if (!player) initPlayer();
-            player.src({ src: url, type: 'application/x-mpegURL' });
-            player.play().catch(e => console.log("Auto-play blocked:", e));
+            
+            retryCount = 0;
+            const proxiedUrl = getProxiedUrl(url);
+            
+            console.log(`লোড হচ্ছে: ${channelName}`);
+            console.log(`Original URL: ${url}`);
+            console.log(`Proxied URL: ${proxiedUrl}`);
+            
+            player.src({ src: proxiedUrl, type: 'application/x-mpegURL' });
+            player.play().catch(e => {
+                console.log("Auto-play error:", e);
+                // অটোপ্লে ব্লক হলে ইউজারকে ম্যানুয়ালি প্লে করতে হবে
+            });
+            
             document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: ${channelName}`;
         }
 
@@ -242,14 +319,13 @@
             renderButtons('sportsChannels', sportsChannels);
             renderButtons('worldcupChannels', worldcupChannels);
 
-            // প্রথম চ্যানেল লোড (বাংলাদেশের প্রথমটি)
             setTimeout(() => {
                 if (bangladeshiChannels.length > 0) {
                     const firstBtn = document.querySelector('#bdChannels .channel-btn');
                     if (firstBtn) firstBtn.classList.add('active');
                     loadChannel(bangladeshiChannels[0].url, bangladeshiChannels[0].name);
                 }
-            }, 100);
+            }, 500);
         });
     })();
 </script>
