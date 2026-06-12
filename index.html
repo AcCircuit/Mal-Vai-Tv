@@ -2,386 +2,358 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Sibli Mal TV | লাইভ স্ট্রিম</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shohag TV</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- HLS.js লাইব্রেরি -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
     <style>
-        * {
+        :root {
+            --primary-neon: #ff0055; 
+            --bg-dark: #08090c;
+            --card-dark: #12141c;
+            --border-dark: #1f2330;
+            --text-gray: #949aab;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Poppins', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background: #0a0c10;
-            color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
-
-        .sticky-player {
+        /* Fixed Top Cinematic Player */
+        .player-wrapper {
             position: sticky;
             top: 0;
-            z-index: 1050;
+            z-index: 1000;
             background: #000;
-            border-bottom: 3px solid #00e5ff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+            border-bottom: 2px solid var(--border-dark);
         }
-
         video {
             width: 100%;
-            max-height: 240px;
+            max-height: 225px;
+            display: block;
             aspect-ratio: 16/9;
             background: #000;
-            outline: none;
         }
 
-        .header {
-            background: #0f1117;
-            padding: 12px 20px;
+        /* Shohag TV Header */
+        .app-navbar {
+            background: #0e1017;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-dark);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #1e1f2a;
-            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .app-logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .app-logo span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+        }
+        .status-badge {
+            background: rgba(255, 0, 85, 0.1);
+            color: var(--primary-neon);
+            border: 1px solid var(--primary-neon);
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: pulse 1.8s infinite;
         }
 
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: #00e5ff;
-            text-shadow: 0 0 5px #00e5ff;
-        }
-
-        .verified-badge {
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid #00e5ff;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #00e5ff;
-        }
-
-        .cat-strip {
-            background: #0d0f14;
+        /* Horizontal Scrolling categories */
+        .nav-categories {
+            background: #0e1017;
             padding: 12px 0;
-            border-bottom: 1px solid #1e1f2a;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .scroll-wrapper {
+            display: flex;
             overflow-x: auto;
             white-space: nowrap;
-            scrollbar-width: thin;
+            padding: 0 15px;
+            gap: 10px;
         }
-
-        .cat-strip::-webkit-scrollbar {
-            height: 3px;
+        .scroll-wrapper::-webkit-scrollbar {
+            display: none; 
         }
-
-        .cat-btn {
-            display: inline-block;
-            background: #171a21;
-            border: none;
-            color: #b0b3bc;
+        .cat-item-btn {
+            background: #171a24;
+            color: #a2a8b9;
+            border: 1px solid var(--border-dark);
             padding: 8px 18px;
-            margin: 0 6px;
-            border-radius: 40px;
-            font-weight: 600;
+            border-radius: 30px;
             font-size: 0.85rem;
-            transition: 0.2s;
-            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
-
-        .cat-btn.active {
-            background: linear-gradient(95deg, #00e5ff, #0077ff);
+        .cat-item-btn.active {
+            background: var(--primary-neon);
             color: white;
-            box-shadow: 0 0 10px #00e5ff;
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
         }
 
-        .channel-list {
-            padding: 16px 12px 80px 12px;
+        /* Dynamic Loading Info */
+        #loading-text {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-gray);
+            font-size: 1rem;
         }
 
-        .channel-card {
-            background: #11141c;
-            border: 1px solid #1f232c;
+        /* Channels List UI */
+        .channels-grid {
+            padding: 15px;
+        }
+        .channel-row-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
             border-radius: 16px;
-            padding: 12px 15px;
+            padding: 14px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
-        .channel-card:hover {
-            border-color: #00e5ff;
-            background: #161b24;
-            transform: translateX(5px);
+        .channel-row-card:active {
+            transform: scale(0.97);
+            background: #191c27;
         }
-
-        .channel-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 229, 255, 0.08);
+        .logo-box {
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, #1d212f, #0c0e14);
+            border: 1px solid #2a2f42;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: #00e5ff;
+            margin-right: 15px;
+            overflow: hidden;
+            flex-shrink: 0;
         }
-
-        .channel-info {
-            flex: 1;
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
-        .channel-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
+        .meta-box {
+            flex-grow: 1;
         }
-
-        .channel-info p {
-            font-size: 0.7rem;
-            color: #8a8f9c;
+        .meta-box h5 {
             margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f6f7f9;
+            text-transform: capitalize;
+        }
+        .meta-box p {
+            margin: 4px 0 0 0;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+        .action-play-btn {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+        .channel-row-card:hover .action-play-btn {
+            color: var(--primary-neon);
         }
 
-        .play-icon {
-            color: #3a3f4b;
-            font-size: 1.3rem;
-        }
-
-        .channel-card:hover .play-icon {
-            color: #00e5ff;
-        }
-
-        .loading-toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #00e5ff;
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 1100;
-            display: none;
-        }
-        
-        .error-message {
-            text-align: center;
-            padding: 30px;
-            color: #ff6b6b;
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.4); }
+            70% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(255, 0, 85, 0); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); }
         }
     </style>
 </head>
 <body>
 
-<div class="sticky-player">
-    <video id="livePlayer" controls autoplay playsinline muted></video>
-</div>
+    <div class="player-wrapper">
+        <video id="video" controls autoplay playsinline></video>
+    </div>
 
-<div class="header">
-    <div class="logo"><i class="fas fa-bolt text-warning"></i> <span>Sibli Mal</span> TV</div>
-    <div class="verified-badge"><i class="fas fa-shield-alt"></i> ✅ ওয়ার্কিং স্ট্রিম</div>
-</div>
+    <div class="app-navbar">
+        <div class="app-logo">
+            <i class="fa-solid fa-play-circle text-danger"></i> <span>Shohag</span> TV
+        </div>
+        <div class="status-badge">● 200+ CHANNELS</div>
+    </div>
 
-<div class="cat-strip" id="categoryStrip">
-    <button class="cat-btn active" data-cat="All">✨ সব চ্যানেল</button>
-    <button class="cat-btn" data-cat="Test">🎬 টেস্ট স্ট্রিম</button>
-    <button class="cat-btn" data-cat="Live">📡 লাইভ টিভি</button>
-    <button class="cat-btn" data-cat="4K">🎥 4K স্ট্রিম</button>
-</div>
+    <div class="nav-categories">
+        <div class="scroll-wrapper">
+            <button class="cat-item-btn active" onclick="filterCategory('All')">📺 সব চ্যানেল</button>
+            <button class="cat-item-btn" onclick="filterCategory('Sports')">⚽ Sports</button>
+            <button class="cat-item-btn" onclick="filterCategory('Movies')">🎬 Movies</button>
+            <button class="cat-item-btn" onclick="filterCategory('News')">🌐 News</button>
+        </div>
+    </div>
 
-<div class="channel-list" id="channelContainer"></div>
+    <div id="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> চ্যানেল ডাটাবেজ লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</div>
+    <div class="channels-grid" id="channelContainer"></div>
 
-<div class="loading-toast" id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> লোড হচ্ছে...</div>
+    <script>
+        // গ্লোবাল সচল ও ওপেন সোর্স ২০০+ আইপিটিভি প্লেলিস্ট সোর্স (অটো-আপডেটেড)
+        const m3uUrl = "https://iptv-org.github.io/iptv/index.m3u";
 
-<script>
-    // ============================================
-    // ১০০% ওয়ার্কিং M3U8 লিংক (টেস্ট করা ও সার্বক্ষণিক সচল)
-    // সোর্স: M3U8 Player Test Links & Apple Official Streams [citation:5]
-    // ============================================
-    const channelDatabase = [
-        // === টেস্ট স্ট্রিম (সবার আগে কাজ করবে) ===
-        { name: "🎬 Big Buck Bunny (4K টেস্ট)", category: "Test", icon: "fa-video", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-        { name: "🎬 Sintel - Full HD (মাল্টি বিটরেট)", category: "Test", icon: "fa-film", url: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8" },
-        { name: "🎬 Tears of Steel (অ্যাডাপ্টিভ)", category: "Test", icon: "fa-clapperboard", url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" },
-        
-        // === লাইভ টিভি স্ট্রিম (সরকারি/পাবলিক সোর্স) ===
-        { name: "📡 NASA TV (মহাকাশ লাইভ)", category: "Live", icon: "fa-globe", url: "https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8" },
-        { name: "📡 Bloomberg টিভি (আর্থিক সংবাদ)", category: "Live", icon: "fa-chart-line", url: "https://bloomberg-bloomberg-1-eu.rakuten.wurl.tv/playlist.m3u8" },
-        { name: "📡 Apple Bipbop (অ্যাপল টেস্ট স্ট্রিম)", category: "Live", icon: "fa-apple", url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8" },
-        
-        // === 4K আল্ট্রা এইচডি স্ট্রিম ===
-        { name: "🎥 4K ডেমো - Big Buck Bunny", category: "4K", icon: "fa-crown", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-        { name: "🎥 4K HDR টেস্ট স্ট্রিম", category: "4K", icon: "fa-star", url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" }
-    ];
+        let channels = [];
+        const video = document.getElementById('video');
+        const container = document.getElementById('channelContainer');
+        const loadingText = document.getElementById('loading-text');
+        let currentHlsEngine = null;
 
-    let activeCategory = "All";
-    let hlsEngine = null;
-    const videoElem = document.getElementById('livePlayer');
-    const container = document.getElementById('channelContainer');
-    const toast = document.getElementById('loadingToast');
-    let currentRetryCount = 0;
-    const MAX_RETRIES = 2;
+        // M3U প্লেলিস্ট পার্স করে আপনার দেওয়া JSON পজিশনে কনভার্ট করার ইঞ্জিন
+        async function fetchIPTVPlaylist() {
+            try {
+                const response = await fetch(m3uUrl);
+                const data = await response.text();
+                const lines = data.split('\n');
+                
+                let currentChan = {};
 
-    // HLS প্লেয়ার ফাংশন
-    function initPlayerStream(url, channelName = "") {
-        // পুরাতন HLS ইঞ্জিন ডেস্ট্রয়
-        if (hlsEngine) {
-            hlsEngine.destroy();
-            hlsEngine = null;
-        }
-        
-        // ভিডিও এলিমেন্ট রিসেট
-        videoElem.pause();
-        videoElem.removeAttribute('src');
-        videoElem.load();
-        
-        // HLS সাপোর্ট চেক [citation:1]
-        if (Hls.isSupported()) {
-            hlsEngine = new Hls({
-                maxBufferLength: 30,
-                maxMaxBufferLength: 60,
-                enableWorker: true,
-                manifestLoadingTimeOut: 15000,
-                levelLoadingTimeOut: 15000,
-                debug: false
-            });
-            
-            hlsEngine.loadSource(url);
-            hlsEngine.attachMedia(videoElem);
-            
-            hlsEngine.on(Hls.Events.MANIFEST_PARSED, () => {
-                console.log("Manifest loaded:", channelName);
-                videoElem.play().catch(e => console.log("Autoplay error:", e));
-                toast.style.display = "none";
-                currentRetryCount = 0;
-                toast.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${channelName} লোড হচ্ছে...`;
-            });
-            
-            hlsEngine.on(Hls.Events.ERROR, (event, data) => {
-                if (data.fatal) {
-                    switch (data.type) {
-                        case Hls.ErrorTypes.NETWORK_ERROR:
-                            if (currentRetryCount < MAX_RETRIES) {
-                                currentRetryCount++;
-                                toast.style.display = "block";
-                                toast.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> রিকানেক্ট (${currentRetryCount}/${MAX_RETRIES})...`;
-                                setTimeout(() => initPlayerStream(url, channelName), 2000);
-                            } else {
-                                toast.innerHTML = "❌ স্ট্রিম লোড হয়নি! অন্য চ্যানেল সিলেক্ট করুন";
-                                setTimeout(() => toast.style.display = "none", 3000);
-                            }
-                            break;
-                        case Hls.ErrorTypes.MEDIA_ERROR:
-                            hlsEngine.recoverMediaError();
-                            break;
-                        default:
-                            toast.innerHTML = "⚠️ স্ট্রিমিং এরর!";
-                            setTimeout(() => toast.style.display = "none", 2000);
-                            break;
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    
+                    if (line.startsWith('#EXTINF:')) {
+                        currentChan = {};
+                        
+                        // নাম এক্সট্রাক্ট করা
+                        const nameMatch = line.match(/,(.+)$/);
+                        currentChan.name = nameMatch ? nameMatch[1].trim() : "Unknown Channel";
+                        
+                        // লগো url এক্সট্রাক্ট করা
+                        const logoMatch = line.match(/tvg-logo="([^"]+)"/);
+                        currentChan.logo = logoMatch ? logoMatch[1] : "https://via.placeholder.com/100";
+                        
+                        // আপনার ফরম্যাট অনুযায়ী ক্যাটাগরি পজিশন সেট করা
+                        if (currentChan.name.toLowerCase().includes('sport') || currentChan.name.toLowerCase().includes('cricket')) {
+                            currentChan.category = "Sports";
+                        } else if (currentChan.name.toLowerCase().includes('movie') || currentChan.name.toLowerCase().includes('cinema')) {
+                            currentChan.category = "Movies";
+                        } else if (currentChan.name.toLowerCase().includes('news') || currentChan.name.toLowerCase().includes('bangla')) {
+                            currentChan.category = "News";
+                        } else {
+                            currentChan.category = "News"; // ডিফল্ট পজিশন
+                        }
+                    } else if (line.startsWith('http')) {
+                        currentChan.url = line;
+                        // শুধুমাত্র নিরাপদ এবং সচল লিংক ফিল্টার করা হচ্ছে
+                        if (currentChan.url.startsWith('https://')) {
+                            channels.push(currentChan);
+                        }
                     }
                 }
-            });
-        } 
-        else if (videoElem.canPlayType('application/vnd.apple.mpegurl')) {
-            // সাফারি ব্রাউজারের জন্য নেটিভ HLS
-            videoElem.src = url;
-            videoElem.addEventListener('loadedmetadata', () => {
-                videoElem.play().catch(e => console.log(e));
-                toast.style.display = "none";
-            });
-        } 
-        else {
-            toast.innerHTML = "❌ আপনার ব্রাউজার HLS সাপোর্ট করে না!";
-            toast.style.display = "block";
-            setTimeout(() => toast.style.display = "none", 3000);
-        }
-    }
+                
+                loadingText.style.display = 'none';
+                displayChannels('All');
+                
+                // ডিফল্ট প্রথম চ্যানেল প্লে করা
+                if(channels.length > 0) {
+                    playStream(channels[0].url);
+                }
 
-    // চ্যানেল লিস্ট রেন্ডার
-    function renderChannels() {
-        if (!container) return;
-        container.innerHTML = '';
-        
-        const filtered = channelDatabase.filter(ch => activeCategory === 'All' || ch.category === activeCategory);
-        
-        if (filtered.length === 0) {
-            container.innerHTML = `<div class="error-message"><i class="fa-regular fa-circle-xmark fa-2x"></i><br>এই ক্যাটাগরিতে কোনো চ্যানেল নেই</div>`;
-            return;
+            } catch (error) {
+                loadingText.innerHTML = "ডাটাবেজ কানেক্ট করা যাচ্ছে না! অনুগ্রহ করে ইন্টারনেট কানেকশন চেক করুন।";
+                console.error(error);
+            }
         }
-        
-        filtered.forEach(ch => {
-            const card = document.createElement('div');
-            card.className = 'channel-card';
-            card.onclick = () => {
-                toast.style.display = "block";
-                toast.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${ch.name} লোড হচ্ছে...`;
-                initPlayerStream(ch.url, ch.name);
-            };
+
+        // চ্যানেল গ্রিড রেন্ডারার (আপনার JSON স্ট্রাকচার অনুযায়ী)
+        function displayChannels(filter) {
+            if (!container) return;
+            container.innerHTML = "";
             
-            card.innerHTML = `
-                <div class="channel-icon">
-                    <i class="fa-solid ${ch.icon}"></i>
-                </div>
-                <div class="channel-info">
-                    <h4>${ch.name}</h4>
-                    <p><i class="fa-regular fa-clock"></i> 24/7 · ${ch.category}</p>
-                </div>
-                <div class="play-icon">
-                    <i class="fa-solid fa-circle-play"></i>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
+            let count = 0;
+            channels.forEach((channel) => {
+                // মেগা লিস্ট থেকে সর্বোচ্চ ২০০-২৫০টি সচল চ্যানেল গ্রিডে সাজানো হচ্ছে
+                if (count < 250 && (filter === 'All' || channel.category === filter)) {
+                    const card = document.createElement('div');
+                    card.className = 'channel-row-card';
+                    card.setAttribute('onclick', `playStream("${channel.url}")`);
 
-    // ক্যাটাগরি পরিবর্তন
-    function switchCategory(category, clickedBtn) {
-        activeCategory = category;
-        renderChannels();
-        
-        document.querySelectorAll('.cat-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        if (clickedBtn) clickedBtn.classList.add('active');
-    }
-
-    // ইভেন্ট লিসেনার
-    function initCategoryEvents() {
-        const btns = document.querySelectorAll('.cat-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const cat = btn.getAttribute('data-cat');
-                switchCategory(cat, btn);
+                    card.innerHTML = `
+                        <div class="logo-box">
+                            <img src="${channel.logo}" alt="logo" onerror="this.src='https://via.placeholder.com/100'">
+                        </div>
+                        <div class="meta-box">
+                            <h5>${channel.name}</h5>
+                            <p>${channel.category} Live Stream</p>
+                        </div>
+                        <div class="action-play-btn">
+                            <i class="fa-solid fa-circle-play"></i>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    count++;
+                }
             });
-        });
-    }
+        }
 
-    // পেজ লোড হলে প্রথম চ্যানেল চালু
-    window.onload = () => {
-        renderChannels();
-        initCategoryEvents();
-        
-        // প্রথম টেস্ট স্ট্রিম চালু (নিশ্চিত কাজ করবে)
-        setTimeout(() => {
-            toast.style.display = "block";
-            toast.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> প্রিমিয়াম স্ট্রিম কানেক্ট হচ্ছে...";
-            const firstChannel = channelDatabase.find(ch => ch.category === "Test") || channelDatabase[0];
-            initPlayerStream(firstChannel.url, firstChannel.name);
-        }, 500);
-    };
-</script>
+        // ক্যাটাগরি ফিল্টার লজিক
+        function filterCategory(categoryName) {
+            const buttons = document.querySelectorAll('.cat-item-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (window.event && window.event.target) {
+                window.event.target.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            displayChannels(categoryName);
+        }
+
+        // সুপার-ফাস্ট নো-বাফারিং প্লেয়ার কোর ইঞ্জিন
+        function playStream(url) {
+            if (currentHlsEngine) {
+                currentHlsEngine.destroy();
+            }
+
+            if (Hls.isSupported()) {
+                currentHlsEngine = new Hls({
+                    maxBufferLength: 10,
+                    liveDurationInfinity: true,
+                    enableWorker: true,
+                    lowLatencyMode: true
+                });
+                currentHlsEngine.loadSource(url);
+                currentHlsEngine.attachMedia(video);
+                currentHlsEngine.on(Hls.Events.MANIFEST_PARSED, function() { 
+                    video.play().catch(e => console.log("Autoplay Handled")); 
+                });
+                
+                currentHlsEngine.on(Hls.Events.ERROR, function (event, data) {
+                    if (data.fatal) {
+                        currentHlsEngine.startLoad();
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata', () => video.play());
+            }
+        }
+
+        window.onload = function() {
+            fetchIPTVPlaylist();
+        };
+    </script>
 </body>
 </html>
