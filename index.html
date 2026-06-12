@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sibli Mal TV - 114</title>
+    <title>SIBLI MAL TV</title>
+    <!-- আধুনিক Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,12 +17,14 @@
         .container { max-width: 1300px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 30px; }
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             background: linear-gradient(135deg, #ff6b35, #f7b42c);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 8px;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
         .header p { color: #8e9aaf; font-size: 0.9rem; }
         .player-wrapper {
@@ -43,7 +46,7 @@
             border: 1px solid rgba(255,255,255,0.08);
         }
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 18px;
             display: flex;
@@ -55,22 +58,31 @@
         }
         .bd-title { border-left-color: #00b894; }
         .sports-title { border-left-color: #e84118; }
-        .worldcup-title { border-left-color: #fbc531; }
+        .ent-title { border-left-color: #9b59b6; }
+        .news-title { border-left-color: #3498db; }
+        
         .channel-grid { display: flex; flex-wrap: wrap; gap: 12px; }
         .channel-btn {
             background: linear-gradient(135deg, #1e2a3a 0%, #0f1722 100%);
             border: 1px solid rgba(255,255,255,0.12);
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 50px;
             color: #eef2ff;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .channel-btn img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
         }
         .channel-btn:hover {
             transform: translateY(-2px);
@@ -89,11 +101,10 @@
         .live-badge {
             background: #e84118;
             color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 20px;
+            font-size: 0.6rem;
+            padding: 1px 5px;
+            border-radius: 10px;
             font-weight: bold;
-            margin-left: 6px;
         }
         .info-text {
             text-align: center;
@@ -106,18 +117,20 @@
         @media (max-width: 700px) {
             body { padding: 12px; }
             .channel-btn { padding: 8px 14px; font-size: 0.8rem; }
-            .section-title { font-size: 1.2rem; }
+            .section-title { font-size: 1.1rem; }
+            .header h1 { font-size: 1.8rem; }
         }
         .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
     </style>
+    <!-- আধুনিক Video.js লাইব্রেরি -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>📺 Sibli Mal TV - লাইভ স্ট্রিমিং</h1>
-        <p>সরাসরি লাইভ সার্ভার থেকে সম্প্রচারিত | খেলার চ্যানেল | ফুটবল বিশ্বকাপ ২০২৬</p>
+        <h1>📺 SIBLI MAL TV</h1>
+        <p>সরাসরি প্লেলিস্ট সার্ভার থেকে সম্প্রচারিত লাইভ আইপিটিভি</p>
     </div>
 
     <div class="player-wrapper">
@@ -126,58 +139,109 @@
         </video>
     </div>
 
+    <!-- বাংলাদেশি জেনারেল চ্যানেল -->
     <div class="channels-section">
         <div class="section-title bd-title">
-            <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল (লাইভ)
+            <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল
         </div>
         <div class="channel-grid" id="bdChannels"></div>
     </div>
 
+    <!-- খেলাধুলার চ্যানেল -->
     <div class="channels-section">
         <div class="section-title sports-title">
-            <span>⚽</span> স্পোর্টস চ্যানেল (লাইভ সম্প্রচার)
+            <span>⚽</span> স্পোর্টস ও লাইভ খেলা
         </div>
         <div class="channel-grid" id="sportsChannels"></div>
     </div>
 
+    <!-- বিনোদন ও সিরিয়াল চ্যানেল -->
     <div class="channels-section">
-        <div class="section-title worldcup-title">
-            <span>🏆</span> ফুটবল বিশ্বকাপ ২০২৬ - লাইভ চ্যানেল
+        <div class="section-title ent-title">
+            <span>🎬</span> বিনোদন ও সিনেমা
         </div>
-        <div class="channel-grid" id="worldcupChannels"></div>
+        <div class="channel-grid" id="entChannels"></div>
+    </div>
+
+    <!-- খবর ও অন্যান্য চ্যানেল -->
+    <div class="channels-section">
+        <div class="section-title news-title">
+            <span>📰</span> খবর ও আন্তর্জাতিক চ্যানেল
+        </div>
+        <div class="channel-grid" id="newsChannels"></div>
     </div>
     
     <div class="info-text">
-        ⚡ চ্যানেলে ক্লিক করলেই সরাসরি লাইভ স্ট্রিম চালু হবে।<br>
-        ✅ এই লিংকগুলো সরাসরি সচল ক্যাশেড সার্ভার থেকে ডাইরেক্ট করা হয়েছে।
+        ⚡ যেকোনো চ্যানেলে ক্লিক করলেই সাথে সাথে উপরে লাইভ স্ট্রিমিং চালু হবে।<br>
+        ⚠️ লোকাল আইপি (172.32.x.x) লিংকগুলো শুধুমাত্র নির্দিষ্ট ISP ইন্টারনেট লাইনে কাজ করবে।
     </div>
     <div class="footer">
-        Sibli Mal TV © 2026 | লাইভ সার্ভার থেকে সরাসরি সম্প্রচারিত
+        SIBLI MAL TV © 2026 | সর্বস্বত্ব সংরক্ষিত।
     </div>
 </div>
 
 <script>
     (function() {
-        // সরাসরি সচল .m3u8 লাইভ স্ট্রিম লিংক (সবগুলো আলাদা ও ইউনিক করা হলো)
-        const bangladeshiChannels = [
-            { name: "সময় টিভি", url: "https://bdiptv.stream:4433/somoy/mono.m3u8" },
-            { name: "একাত্তর টিভি", url: "https://bdiptv.stream:4433/71tv/mono.m3u8" },
-            { name: "যমুনা টিভি", url: "https://bdiptv.stream:4433/jamuna/mono.m3u8" },
-            { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://bdiptv.stream:4433/independent/mono.m3u8" },
-            { name: "চ্যানেল আই", url: "https://bdiptv.stream:4433/channeli/mono.m3u8" },
-            { name: "আরটিভি", url: "https://bdiptv.stream:4433/rtv/mono.m3u8" }
+        // আপনার দেওয়া এক্সক্লুসিভ M3U প্লেলিস্টের ডাটাবেজ
+        const bdChannels = [
+            { name: "MAASRANGA TV HD", url: "http://172.32.1.88:1935/tvprogram/MAASRANGA-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/maasranga-tv.jpg" },
+            { name: "BTV HD", url: "http://172.32.1.88:1935/tvprogram/BTV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/btv.jpg" },
+            { name: "NAGORIK TV", url: "http://172.32.1.88:1935/tvprogram/NAGORIK-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/nagorik-tv.jpg" },
+            { name: "CHANNEL I HD", url: "http://172.32.1.88:1935/tvprogram/CHANNEL-I/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/channel-i.jpg" },
+            { name: "DEPTO BANGLA HD", url: "http://172.32.1.88:1935/tvprogram/DEPTO-BANGLA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/depto-tv.jpg" },
+            { name: "CHANNEL 9 HD", url: "http://172.32.1.88:1935/tvprogram/CHANNEL-9/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/channel-9.jpg" },
+            { name: "SATV", url: "http://172.32.1.88:1935/tvprogram/SATV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/satv.jpg" },
+            { name: "NTV", url: "http://172.32.1.88:1935/tvprogram/N-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/ntv.jpg" },
+            { name: "ATN BANGLA", url: "http://172.32.1.88:1935/tvprogram/ATN-BANGLA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/atn-bangla.jpg" },
+            { name: "RTV HD", url: "http://172.32.1.88:1935/tvprogram/RTV-BANGLA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/rtv.jpg" },
+            { name: "EKUSHEY TV", url: "http://172.32.1.88:1935/tvprogram/Ekushey-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/ekushey-tv.jpg" },
+            { name: "BANGLA VISION HD", url: "http://172.32.1.88:1935/tvprogram/BANGLA-VISION/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/banglavision.jpg" },
+            { name: "MY TV HD", url: "http://172.32.1.88:1935/tvprogram/MY-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/my-tv.jpg" },
+            { name: "DURONTO TV", url: "http://172.32.1.88:1935/tvprogram/Duronto-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/duronto-tv.jpg" }
         ];
         
         const sportsChannels = [
-            { name: "টি স্পোর্টস", url: "https://bdiptv.stream:4433/tsports/mono.m3u8", tag: "HD" },
-            { name: "জিটিভি স্পোর্টস", url: "https://bdiptv.stream:4433/gtv/mono.m3u8", tag: "LIVE" },
-            { name: "সনি স্পোর্টস টেন ৫", url: "https://linearjitp-playback.akamaized.net/demo/sony_ten5/index.m3u8", tag: "Sony" },
-            { name: "স্টার স্পোর্টস ১", url: "https://linearjitp-playback.akamaized.net/demo/star_sports1/index.m3u8", tag: "Cricket" }
+            { name: "SPORTS 18 HD", url: "https://stream.sunplex.live/SPORTS-18/index.m3u8", logo: "https://sunplex.net/iptv/logo/sports-18-hd1-fifa-2022.jpg", tag: "FIFA" },
+            { name: "T SPORTS HD", url: "https://stream.sunplex.live/T-SPORTS/index.m3u8", logo: "https://sunplex.net/iptv/logo/t-sports-hd-fifa-2022.jpg", tag: "LIVE" },
+            { name: "T SPORTS (Src 2)", url: "http://172.32.1.88:1935/tvprogram/T-SPORTS/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/t-sports-hd-fifa-2022.jpg" },
+            { name: "GAZI TV HD", url: "https://stream.sunplex.live/GAZI-TV/index.m3u8", logo: "https://sunplex.net/iptv/logo/gtv-hd-fifa-2022.jpg", tag: "LIVE" },
+            { name: "GAZI TV (Src 2)", url: "http://172.32.1.88:1935/tvprogram/GAZI-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/gtv-hd-fifa-2022.jpg" },
+            { name: "YES TV HD", url: "https://stream.sunplex.live/YES-TV/index.m3u8", logo: "https://sunplex.net/iptv/logo/yestv-hd-fifa-2022.jpg", tag: "FIFA" },
+            { name: "SONY SIX", url: "http://172.32.1.88:1935/tvprogram/SONY-SIXHD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-six-hd.jpg" },
+            { name: "SONY TEN 1 HD", url: "http://172.32.1.88:1935/tvprogram/TEN-1HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-ten-1.jpg" },
+            { name: "SONY TEN 2 HD", url: "http://172.32.1.88:1935/tvprogram/TEN-2/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-ten-2-hd.jpg" },
+            { name: "SONY TEN 3", url: "http://172.32.1.88:1935/tvprogram/TEN3HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-ten-3-hd.jpg" },
+            { name: "Skynet Sports HD", url: "http://172.32.1.88:1935/tvprogram/SKY-NET-HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-hd.jpg" },
+            { name: "Skynet Sports 1", url: "http://172.32.1.88:1935/tvprogram/SKY-NET-1/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-1.jpg" },
+            { name: "Skynet Sports 2", url: "http://172.32.1.88:1935/tvprogram/SKY-NET-2/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-2.jpg" },
+            { name: "Skynet Sports 6", url: "http://172.32.1.88:1935/tvprogram/SKY-NET-6/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/skynet-sports-6.jpg" }
         ];
-        
-        const worldcupChannels = [
-            { name: "FIFA World Cup Official", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQb宏bGlzaF9ITFM/playlist.m3u8", tag: "4K" },
-            { name: "FIFA+ Match Stream", url: "https://dai.google.com/linear/hls/event/Sid4_v9vT96I1XUnmB66_A/stream.m3u8", tag: "LIVE" }
+
+        const entChannels = [
+            { name: "SONY AATH", url: "http://172.32.1.88:1935/tvprogram/SONY-AATH/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-aath.jpg" },
+            { name: "ZEE BANGLA", url: "http://172.32.1.88:1935/tvprogram/ZEE-BANGLA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/zee-bangla.jpg" },
+            { name: "STAR JALSHA HD", url: "http://172.32.1.88:1935/tvprogram/STAR-JALSHA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/star-jalsha.jpg" },
+            { name: "SONY HD", url: "http://172.32.1.88:1935/tvprogram/SONY-HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-hd.jpg" },
+            { name: "SETMAX HD", url: "http://172.32.1.88:1935/tvprogram/SETMAX-HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/set-max-hd.jpg" },
+            { name: "SONY PIX HD", url: "http://172.32.1.88:1935/tvprogram/SONY-PIXHD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-pix-hd.jpg" },
+            { name: "SONY MAX 2", url: "http://172.32.1.88:1935/tvprogram/SONY-MAX2/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-max-2.jpg" },
+            { name: "SONY SAB HD", url: "http://172.32.1.88:1935/tvprogram/SONY-SUBHD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/sony-sab-hd.jpg" },
+            { name: "BBC Lifestyle", url: "http://172.32.1.88:1935/tvprogram/JALSHA-MOVIES/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/bbc-lifestyle.jpg" },
+            { name: "DD BANGLA", url: "http://172.32.1.88:1935/tvprogram/DD-BANGLA/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/dd-bangla.jpg" },
+            { name: "GAAN BANGLA", url: "http://172.32.1.88:1935/tvprogram/Gaan-Bangla/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/gaan-bangla.jpg" }
+        ];
+
+        const newsChannels = [
+            { name: "SOMOY TV", url: "http://172.32.1.88:1935/tvprogram/SOMOY-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/somoy-tv.jpg", tag: "HOT" },
+            { name: "EKATTOR TV HD", url: "http://172.32.1.88:1935/tvprogram/Ekattor-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/ekattor-tv.jpg" },
+            { name: "INDEPENDENT TV", url: "http://172.32.1.88:1935/tvprogram/INDEPENDENT/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/independent-tv.jpg" },
+            { name: "JAMUNA TV", url: "http://172.32.1.88:1935/tvprogram/JAMUNA-TV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/jamuna-tv.jpg" },
+            { name: "CHANNEL 24", url: "http://172.32.1.88:1935/tvprogram/Channel-24/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/channel-24.jpg" },
+            { name: "News24 HD", url: "http://172.32.1.88:1935/tvprogram/MTV/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/news-24.jpg" },
+            { name: "BBC WORLD NEWS", url: "http://172.32.1.88:1935/tvprogram/BBC-WORLD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/bbc-world-news.jpg" },
+            { name: "ALJAZEERA HD", url: "http://172.32.1.88:1935/tvprogram/Aljazeera-HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/aljazeera.jpg" },
+            { name: "BBC EARTH HD", url: "http://172.32.1.88:1935/tvprogram/BBC-EARTH/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/bbc-earth.jpg" },
+            { name: "DW", url: "http://172.32.1.88:1935/tvprogram/DW-HD/playlist.m3u8", logo: "https://sunplex.net/iptv/logo/dw.jpg" }
         ];
         
         let player = null;
@@ -186,7 +250,7 @@
             if (player) return;
             player = videojs('livePlayer', {
                 fluid: true,
-                autoplay: 'muted', // আধুনিক ব্রাউজারের অটোপ্লে পলিসির জন্য প্রথমে মিউট রাখা নিরাপদ
+                autoplay: 'muted',
                 controls: true,
                 preload: 'auto'
             });
@@ -201,11 +265,10 @@
             });
             
             player.play().then(() => {
-                // প্লে শুরু হলে রিয়েল অডিওর জন্য আনমিউট করা হবে
                 player.muted(false);
-            }).catch(e => console.log("Autoplay context handled:", e));
+            }).catch(e => console.log("Autoplay block protection triggered:", e));
             
-            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: <strong>${channelName}</strong>`;
+            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে সম্প্রচারিত হচ্ছে: <strong>${channelName}</strong>`;
         }
 
         function renderButtons(containerId, channelsArray) {
@@ -216,7 +279,13 @@
             channelsArray.forEach((ch) => {
                 const btn = document.createElement('button');
                 btn.className = 'channel-btn';
-                btn.innerHTML = `${ch.name} ${ch.tag ? `<span class="live-badge">${ch.tag}</span>` : ''}`;
+                
+                // লোগোসহ বাটন রেন্ডার লজিক
+                btn.innerHTML = `
+                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/20?text=TV'" alt="">
+                    <span>${ch.name}</span> 
+                    ${ch.tag ? `<span class="live-badge">${ch.tag}</span>` : ''}
+                `;
                 
                 btn.onclick = () => {
                     document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
@@ -229,16 +298,17 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initPlayer();
-            renderButtons('bdChannels', bangladeshiChannels);
+            renderButtons('bdChannels', bdChannels);
             renderButtons('sportsChannels', sportsChannels);
-            renderButtons('worldcupChannels', worldcupChannels);
+            renderButtons('entChannels', entChannels);
+            renderButtons('newsChannels', newsChannels);
             
-            // প্রথম চ্যানেল হিসেবে 'টি স্পোর্টস' অটো-লোড হবে পেজ খোলার সাথে সাথে
-            if (sportsChannels.length > 0) {
+            // প্রথম ডিফল্ট চ্যানেল হিসেবে পেজ চালুর পর T SPORTS HD লোড হবে
+            if (sportsChannels.length > 1) {
                 setTimeout(() => {
-                    const firstBtn = document.querySelector('#sportsChannels .channel-btn');
+                    const firstBtn = document.querySelectorAll('#sportsChannels .channel-btn')[1]; // ১ম ডাইরেক্ট লাইভ লিংক
                     if (firstBtn) firstBtn.classList.add('active');
-                    loadChannel(sportsChannels[0].url, sportsChannels[0].name);
+                    loadChannel(sportsChannels[1].url, sportsChannels[1].name);
                 }, 500);
             }
         });
