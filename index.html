@@ -3,219 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sibli Mal Tv - Live Sports</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Sibli Mal Tv</title>
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .video-js { width: 100% !important; height: 450px !important; border-radius: 12px; }
-        @media (max-width: 768px) { .video-js { height: 240px !important; } }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0b111e; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #38bdf8;
+            margin-bottom: 5px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1200px;
+            width: 100%;
+            gap: 20px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .player-section {
+            flex: 2.5;
+        }
+        .playlist-section {
+            flex: 1;
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 480px;
+            overflow-y: auto;
+            border: 1px solid #334155;
+        }
+        .playlist-section h3 {
+            margin-top: 0;
+            color: #38bdf8;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 10px;
+            font-size: 18px;
+        }
+        .channel-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .channel-item {
+            padding: 14px;
+            background: #1e293b;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+        }
+        .channel-item:hover {
+            background: #38bdf8;
+            color: #000;
+            transform: translateX(5px);
+        }
+        .active-channel {
+            background: #38bdf8;
+            color: #000;
+            border-left: 4px solid #0284c7;
+            font-weight: bold;
+        }
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .playlist-section {
+                max-height: 280px;
+            }
+        }
     </style>
 </head>
-<body class="bg-[#0d1622] text-slate-100 font-sans antialiased">
+<body>
 
-    <header class="bg-[#0b111e] border-b border-slate-800 p-4 sticky top-0 z-40 shadow-xl">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-blue-500 text-xl font-black tracking-wider">Sibli Mal Tv</span>
-            </div>
-            <div class="flex items-center gap-5 text-slate-400">
-                <i class="fa-regular fa-bell hover:text-white cursor-pointer text-lg"></i>
-                <i class="fa-regular fa-heart hover:text-white cursor-pointer text-lg"></i>
-                <i class="fa-solid fa-rotate hover:text-white cursor-pointer text-lg"></i>
-                <i class="fa-solid fa-magnifying-glass hover:text-white cursor-pointer text-lg"></i>
-            </div>
-        </div>
-    </header>
+    <h1>Sibli Mal Tv</h1>
+    <div class="subtitle">Live Sports & Entertainment Streaming</div>
 
-    <main class="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl">
-        
-        <div class="lg:col-span-2 space-y-4">
-            <div class="bg-[#121f32] p-4 rounded-2xl border border-slate-800 shadow-2xl">
-                <h2 id="playing-title" class="text-base md:text-lg font-bold mb-3 text-emerald-400 flex items-center gap-2">
-                    <span class="animate-ping inline-block h-2 w-2 rounded-full bg-red-500"></span>
-                    এখন দেখছেন: কোনো ম্যাচ সিলেক্ট করা হয়নি
-                </h2>
-                <div class="overflow-hidden bg-black rounded-xl">
-                    <video id="live-player" class="video-js vjs-default-skin vjs-big-play-centered" controls autoplay preload="auto">
-                        <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
-                    </video>
-                </div>
-            </div>
+    <div class="container">
+        <div class="player-section">
+            <video
+                id="my-video"
+                class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9"
+                controls
+                preload="auto"
+                width="100%"
+                data-setup='{}'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video
+                </p>
+            </video>
         </div>
 
-        <div class="bg-[#121f32] p-4 rounded-2xl border border-slate-800 shadow-2xl flex flex-col h-[530px]">
-            <div class="border-b border-slate-800 pb-3 mb-3 flex justify-between items-center">
-                <h3 class="font-bold text-sm tracking-wide text-slate-400 uppercase">Live & Upcoming Events</h3>
-                <span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-blue-500/20">FIFA 2026</span>
-            </div>
-            
-            <div class="overflow-y-auto flex-1 space-y-3 pr-1" id="matches-list">
-                </div>
-        </div>
-    </main>
-
-    <div id="links-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-[#121f32] border border-slate-700 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl">
-            <div class="p-4 bg-[#0b111e] border-b border-slate-800 flex justify-between items-center">
-                <div>
-                    <h4 class="font-bold text-lg text-white">Multiple links available</h4>
-                    <p id="modal-match-name" class="text-xs text-slate-400 mt-0.5">Select a streaming server</p>
-                </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white bg-slate-800/50 p-2 rounded-full transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="p-4 max-h-80 overflow-y-auto space-y-2" id="modal-links-container">
-                </div>
+        <div class="playlist-section">
+            <h3>Sports Channels</h3>
+            <ul id="channel-list" class="channel-list">
+                <li class="channel-item">Loading Live Channels...</li>
+            </ul>
         </div>
     </div>
-
-    <footer class="bg-[#0b111e] border-t border-slate-800 p-3 sticky bottom-0 z-40 block">
-        <div class="container mx-auto max-w-md flex justify-between items-center text-slate-400 text-xs text-center">
-            <div class="cursor-pointer hover:text-blue-500"><i class="fa-solid fa-gear text-lg block mb-1"></i>Settings</div>
-            <div class="cursor-pointer hover:text-blue-500"><i class="fa-solid fa-play text-lg block mb-1"></i>Channels</div>
-            <div class="cursor-pointer text-blue-500 font-bold"><i class="fa-solid fa-tower-broadcast text-lg block mb-1 text-blue-500"></i>Live Events</div>
-            <div class="cursor-pointer hover:text-blue-500"><i class="fa-solid fa-soccer-ball text-lg block mb-1"></i>Sports</div>
-            <div class="cursor-pointer hover:text-blue-500"><i class="fa-solid fa-tv text-lg block mb-1"></i>IPTV</div>
-        </div>
-    </footer>
 
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
-        // ⚽ ম্যাচের লাইভ ডাটাবেজ
-        const matches = [
-            {
-                id: 1,
-                title: "Football || FIFA World Cup 2026",
-                team1: "Canada",
-                team1_flag: "🇨🇦",
-                team2: "Bosnia & Herzegovina",
-                team2_flag: "🇧🇦",
-                time: "01:00 AM",
-                date: "13/06/2026",
-                status: "Starts in 11 hours",
-                links: [
-                    { name: "Falcon Ultra (Live 1)", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-                    { name: "Astro Cricket HD (Live 2)", url: "https://opentv.online/live/astro.m3u8" },
-                    { name: "Sony Ten Sports (Live 3)", url: "https://iptv-org.github.io/iptv/categories/sports.m3u" },
-                    { name: "TSN Sports HD", url: "YOUR_TSN_SPORTS_M3U8_LINK" },
-                    { name: "Sky Sports 1", url: "YOUR_SKY_SPORTS_M3U8_LINK" }
-                ]
-            },
-            {
-                id: 2,
-                title: "Football || FIFA World Cup 2026",
-                team1: "USA",
-                team1_flag: "🇺🇸",
-                team2: "Paraguay",
-                team2_flag: "🇵🇾",
-                time: "07:00 AM",
-                date: "13/06/2026",
-                status: "Starts in 17 hours",
-                links: [
-                    { name: "Falcon Live Stream 1", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-                    { name: "Astro Server 2", url: "https://opentv.online/live/astro.m3u8" },
-                    { name: "Ten Sports Live", url: "YOUR_LINK_HERE" }
-                ]
-            },
-            {
-                id: 3,
-                title: "WWE Friday Night Smackdown",
-                team1: "WWE",
-                team1_flag: "💥",
-                team2: "Smackdown",
-                team2_flag: "🔵",
-                time: "06:00 AM",
-                date: "13/06/2026",
-                status: "Starts in 16 hours",
-                links: [
-                    { name: "Live Stream Server 1", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-                    { name: "Sony Ten 1 HD", url: "YOUR_SONY_LINK" }
-                ]
-            }
-        ];
+        const player = videojs('my-video');
+        const channelListContainer = document.getElementById('channel-list');
 
-        const player = videojs('live-player');
-        let activeMatch = null;
+        // আপনার একই গিটহাব রিপোজিটরিতে থাকা প্লেলিস্ট ফাইলের নাম
+        const m3uUrl = 'playlist.m3u'; 
 
-        function loadMatches() {
-            const container = document.getElementById('matches-list');
-            container.innerHTML = '';
+        function parseM3U(data) {
+            const lines = data.split('\n');
+            const channels = [];
+            let currentChannel = {};
 
-            matches.forEach(match => {
-                const card = document.createElement('div');
-                card.className = "bg-[#0b111e] p-4 rounded-xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition shadow-md relative overflow-hidden group";
-                card.onclick = () => openLinksModal(match.id);
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
                 
-                card.innerHTML = `
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-semibold text-amber-500"><i class="fa-solid fa-trophy mr-1 text-[10px]"></i>${match.title}</span>
-                        <span class="text-[11px] text-blue-400 font-mono">${match.time} | ${match.date}</span>
-                    </div>
-                    <div class="flex items-center justify-between py-2 px-1">
-                        <div class="flex items-center gap-3 w-5/12">
-                            <span class="text-2xl">${match.team1_flag}</span>
-                            <span class="text-sm font-bold truncate">${match.team1}</span>
-                        </div>
-                        <div class="text-xs font-black text-slate-500 w-2/12 text-center group-hover:text-blue-400 transition">VS</div>
-                        <div class="flex items-center gap-3 w-5/12 justify-end text-right">
-                            <span class="text-sm font-bold truncate">${match.team2}</span>
-                            <span class="text-2xl">${match.team2_flag}</span>
-                        </div>
-                    </div>
-                    <div class="mt-2 text-center border-t border-slate-900 pt-2">
-                        <span class="text-[11px] bg-slate-900 text-slate-400 px-3 py-1 rounded-full">${match.status}</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function openLinksModal(matchId) {
-            const match = matches.find(m => m.id === matchId);
-            if (!match) return;
-
-            activeMatch = match;
-            document.getElementById('modal-match-name').innerText = `${match.team1} VS ${match.team2}`;
-            
-            const linksContainer = document.getElementById('modal-links-container');
-            linksContainer.innerHTML = '';
-
-            match.links.forEach(link => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left bg-[#1e2d42] hover:bg-blue-600 hover:text-white p-3 rounded-xl flex items-center justify-between transition font-medium text-sm text-slate-200 border border-slate-700/50";
-                btn.innerHTML = `<span><i class="fa-solid fa-circle-play mr-2 text-blue-400"></i>${link.name}</span> <i class="fa-solid fa-chevron-right text-xs opacity-60"></i>`;
-                btn.onclick = () => startStream(link.url, link.name);
-                linksContainer.appendChild(btn);
-            });
-
-            document.getElementById('links-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('links-modal').classList.add('hidden');
-        }
-
-        function startStream(url, serverName) {
-            if (url.includes("YOUR_")) {
-                alert(`দুঃখিত! এই সার্ভারের (${serverName}) লাইভ .m3u8 লিংকটি এখনও আপডেট করা হয়নি।`);
-                return;
+                if (line.startsWith('#EXTINF:')) {
+                    const nameMatch = line.match(/,(.+)$/);
+                    if (nameMatch) {
+                        currentChannel.name = nameMatch[1];
+                    }
+                } else if (line.startsWith('http')) {
+                    currentChannel.url = line;
+                    channels.push(currentChannel);
+                    currentChannel = {}; 
+                }
             }
-            
-            document.getElementById('playing-title').innerHTML = `<span class="animate-ping inline-block h-2 w-2 rounded-full bg-emerald-500 mr-1"></span> এখন দেখছেন: ${activeMatch.team1} VS ${activeMatch.team2} (${serverName})`;
-            
-            player.src({ type: 'application/x-mpegURL', src: url });
-            player.play();
-            closeModal();
+            return channels;
         }
 
-        window.onload = loadMatches;
+        async function loadPlaylist() {
+            try {
+                const response = await fetch(m3uUrl);
+                if (!response.ok) throw new Error('Could not load playlist.m3u');
+                const data = await response.text();
+                const channels = parseM3U(data);
+
+                if (channels.length === 0) {
+                    channelListContainer.innerHTML = '<li class="channel-item">No channels available.</li>';
+                    return;
+                }
+
+                channelListContainer.innerHTML = ''; 
+
+                channels.forEach((channel, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'channel-item';
+                    li.textContent = channel.name || `Sports Ch ${index + 1}`;
+                    
+                    li.addEventListener('click', () => {
+                        document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active-channel'));
+                        li.classList.add('active-channel');
+
+                        player.src({
+                            src: channel.url,
+                            type: 'application/x-mpegURL'
+                        });
+                        player.play().catch(error => {
+                            console.log("Playback failed or interrupted:", error);
+                        });
+                    });
+
+                    channelListContainer.appendChild(li);
+
+                    // প্রথম চ্যানেলটি পেজ লোড হওয়ার সাথে সাথে সেট হবে
+                    if (index === 0) {
+                        li.classList.add('active-channel');
+                        player.src({
+                            src: channel.url,
+                            type: 'application/x-mpegURL'
+                        });
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                channelListContainer.innerHTML = '<li class="channel-item" style="color: #ef4444;">Failed to load channels. Please check playlist.m3u file!</li>';
+            }
+        }
+
+        window.onload = loadPlaylist;
     </script>
 </body>
 </html>
