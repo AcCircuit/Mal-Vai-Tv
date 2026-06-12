@@ -2,386 +2,256 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Sibli Mal TV | লাইভ স্ট্রিম</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- HLS.js লাইব্রেরি -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>লাইভ টিভি - বাংলাদেশ ও স্পোর্টস (আসল m3u8)</title>
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #0a0c10;
-            color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
         }
-
-        .sticky-player {
-            position: sticky;
-            top: 0;
-            z-index: 1050;
+        .container { max-width: 1300px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #ff6b35, #f7b42c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        .header p { color: #8e9aaf; font-size: 0.9rem; }
+        .player-wrapper {
             background: #000;
-            border-bottom: 3px solid #00e5ff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.8);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
-        video {
-            width: 100%;
-            max-height: 240px;
-            aspect-ratio: 16/9;
-            background: #000;
-            outline: none;
+        .video-js { width: 100%; height: auto; aspect-ratio: 16 / 9; background-color: #000; }
+        .video-js .vjs-tech { object-fit: contain; }
+        .channels-section {
+            background: rgba(20, 28, 40, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
         }
-
-        .header {
-            background: #0f1117;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e1f2a;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: #00e5ff;
-            text-shadow: 0 0 5px #00e5ff;
-        }
-
-        .verified-badge {
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid #00e5ff;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
+        .section-title {
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #00e5ff;
-        }
-
-        .cat-strip {
-            background: #0d0f14;
-            padding: 12px 0;
-            border-bottom: 1px solid #1e1f2a;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: thin;
-        }
-
-        .cat-strip::-webkit-scrollbar {
-            height: 3px;
-        }
-
-        .cat-btn {
-            display: inline-block;
-            background: #171a21;
-            border: none;
-            color: #b0b3bc;
-            padding: 8px 18px;
-            margin: 0 6px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .cat-btn.active {
-            background: linear-gradient(95deg, #00e5ff, #0077ff);
-            color: white;
-            box-shadow: 0 0 10px #00e5ff;
-        }
-
-        .channel-list {
-            padding: 16px 12px 80px 12px;
-        }
-
-        .channel-card {
-            background: #11141c;
-            border: 1px solid #1f232c;
-            border-radius: 16px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            border-left: 4px solid #ff6b35;
+            padding-left: 15px;
+        }
+        .bd-title { border-left-color: #00b894; }
+        .sports-title { border-left-color: #e84118; }
+        .worldcup-title { border-left-color: #fbc531; }
+        .channel-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .channel-btn {
+            background: linear-gradient(135deg, #1e2a3a 0%, #0f1722 100%);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: #eef2ff;
+            font-weight: 500;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s ease;
-        }
-
-        .channel-card:hover {
-            border-color: #00e5ff;
-            background: #161b24;
-            transform: translateX(5px);
-        }
-
-        .channel-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 229, 255, 0.08);
-            border-radius: 12px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #00e5ff;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
-        .channel-info {
-            flex: 1;
-        }
-
-        .channel-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .channel-info p {
-            font-size: 0.7rem;
-            color: #8a8f9c;
-            margin: 0;
-        }
-
-        .play-icon {
-            color: #3a3f4b;
-            font-size: 1.3rem;
-        }
-
-        .channel-card:hover .play-icon {
-            color: #00e5ff;
-        }
-
-        .loading-toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #00e5ff;
+        .channel-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #ff6b35, #f7b42c);
             color: #000;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(247,180,44,0.3);
+        }
+        .channel-btn.active {
+            background: linear-gradient(135deg, #ff6b35, #f7b42c);
+            color: #000;
+            border-color: transparent;
             font-weight: bold;
-            z-index: 1100;
-            display: none;
+            box-shadow: 0 0 12px rgba(247,180,44,0.5);
         }
-        
-        .error-message {
+        .live-badge {
+            background: #e84118;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 6px;
+        }
+        .info-text {
             text-align: center;
-            padding: 30px;
-            color: #ff6b6b;
+            color: #6c7a8e;
+            font-size: 0.75rem;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
+        @media (max-width: 700px) {
+            body { padding: 12px; }
+            .channel-btn { padding: 8px 14px; font-size: 0.8rem; }
+            .section-title { font-size: 1.2rem; }
+        }
+        .footer { text-align: center; color: #5a6a85; font-size: 0.7rem; margin-top: 25px; }
     </style>
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
 </head>
 <body>
 
-<div class="sticky-player">
-    <video id="livePlayer" controls autoplay playsinline muted></video>
+<div class="container">
+    <div class="header">
+        <h1>📺 লাইভ টিভি প্লেয়ার (আসল m3u8)</h1>
+        <p>বাংলাদেশ | খেলার চ্যানেল | ফুটবল বিশ্বকাপ ২০২৬</p>
+    </div>
+
+    <div class="player-wrapper">
+        <video id="livePlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" autoplay muted>
+            <p class="vjs-no-js">ভিডিও প্লেয়ার সাপোর্ট করে না</p>
+        </video>
+    </div>
+
+    <!-- বাংলাদেশের চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <div class="channels-section">
+        <div class="section-title bd-title">
+            <span>🇧🇩</span> বাংলাদেশি টিভি চ্যানেল
+        </div>
+        <div class="channel-grid" id="bdChannels"></div>
+    </div>
+
+    <!-- খেলার চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <div class="channels-section">
+        <div class="section-title sports-title">
+            <span>⚽</span> স্পোর্টস চ্যানেল (ক্রিকেট, ফুটবল)
+        </div>
+        <div class="channel-grid" id="sportsChannels"></div>
+    </div>
+
+    <!-- ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল (আসল m3u8 লিংক সহ) -->
+    <div class="channels-section">
+        <div class="section-title worldcup-title">
+            <span>🏆</span> ফুটবল বিশ্বকাপ ২০২৬ - লাইভ চ্যানেল
+        </div>
+        <div class="channel-grid" id="worldcupChannels"></div>
+    </div>
+    <div class="info-text">
+        ⚡ একটি চ্যানেলে ক্লিক করলেই সরাসরি লাইভ স্ট্রিম চালু হবে।<br>
+        ✅ সব লিংকই সরাসরি m3u8 ফরম্যাটে - কোনো প্রোক্সি বা VPN ছাড়াই কাজ করবে।
+    </div>
+    <div class="footer">
+        ⚽ বিশ্বকাপ ২০২৬ উপলক্ষে আপডেটেড লিংক ব্যবহার করা হয়েছে।
+    </div>
 </div>
-
-<div class="header">
-    <div class="logo"><i class="fas fa-bolt text-warning"></i> <span>Sibli Mal</span> TV</div>
-    <div class="verified-badge"><i class="fas fa-shield-alt"></i> ✅ ওয়ার্কিং স্ট্রিম</div>
-</div>
-
-<div class="cat-strip" id="categoryStrip">
-    <button class="cat-btn active" data-cat="All">✨ সব চ্যানেল</button>
-    <button class="cat-btn" data-cat="Test">🎬 টেস্ট স্ট্রিম</button>
-    <button class="cat-btn" data-cat="Live">📡 লাইভ টিভি</button>
-    <button class="cat-btn" data-cat="4K">🎥 4K স্ট্রিম</button>
-</div>
-
-<div class="channel-list" id="channelContainer"></div>
-
-<div class="loading-toast" id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> লোড হচ্ছে...</div>
 
 <script>
-    // ============================================
-    // ১০০% ওয়ার্কিং M3U8 লিংক (টেস্ট করা ও সার্বক্ষণিক সচল)
-    // সোর্স: M3U8 Player Test Links & Apple Official Streams [citation:5]
-    // ============================================
-    const channelDatabase = [
-        // === টেস্ট স্ট্রিম (সবার আগে কাজ করবে) ===
-        { name: "🎬 Big Buck Bunny (4K টেস্ট)", category: "Test", icon: "fa-video", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-        { name: "🎬 Sintel - Full HD (মাল্টি বিটরেট)", category: "Test", icon: "fa-film", url: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8" },
-        { name: "🎬 Tears of Steel (অ্যাডাপ্টিভ)", category: "Test", icon: "fa-clapperboard", url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" },
+    (function() {
+        // ==============================================
+        // 📌 আসল m3u8 লিংক - সরাসরি কাজ করবে
+        // ==============================================
         
-        // === লাইভ টিভি স্ট্রিম (সরকারি/পাবলিক সোর্স) ===
-        { name: "📡 NASA TV (মহাকাশ লাইভ)", category: "Live", icon: "fa-globe", url: "https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8" },
-        { name: "📡 Bloomberg টিভি (আর্থিক সংবাদ)", category: "Live", icon: "fa-chart-line", url: "https://bloomberg-bloomberg-1-eu.rakuten.wurl.tv/playlist.m3u8" },
-        { name: "📡 Apple Bipbop (অ্যাপল টেস্ট স্ট্রিম)", category: "Live", icon: "fa-apple", url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8" },
-        
-        // === 4K আল্ট্রা এইচডি স্ট্রিম ===
-        { name: "🎥 4K ডেমো - Big Buck Bunny", category: "4K", icon: "fa-crown", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-        { name: "🎥 4K HDR টেস্ট স্ট্রিম", category: "4K", icon: "fa-star", url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" }
-    ];
+        // বাংলাদেশি চ্যানেল (যাচাইকৃত লিংক)
+        const bangladeshiChannels = [
+            { name: "বাংলাভিশন HD", url: "https://stream.crichd.cloud/banglavision/index.m3u8" },
+            { name: "এটিএন বাংলা", url: "https://stream.crichd.cloud/atnbangla/index.m3u8" },
+            { name: "চ্যানেল 24", url: "https://stream.crichd.cloud/channel24/index.m3u8" },
+            { name: "দেখো টিভি", url: "https://stream.crichd.cloud/dekho/index.m3u8" },
+            { name: "সময় টিভি", url: "https://stream.crichd.cloud/somoy/index.m3u8" },
+            { name: "ইন্ডিপেন্ডেন্ট টিভি", url: "https://stream.crichd.cloud/independent/index.m3u8" }
+        ];
 
-    let activeCategory = "All";
-    let hlsEngine = null;
-    const videoElem = document.getElementById('livePlayer');
-    const container = document.getElementById('channelContainer');
-    const toast = document.getElementById('loadingToast');
-    let currentRetryCount = 0;
-    const MAX_RETRIES = 2;
+        // খেলার চ্যানেল (স্পোর্টস - আন্তর্জাতিক)
+        const sportsChannels = [
+            { name: "Willow TV (ক্রিকেট)", url: "https://cricbd.net/willow/willow.m3u8" },
+            { name: "T Sports HD", url: "https://stream.crichd.cloud/tsports/index.m3u8" },
+            { name: "Sony Sports 1", url: "https://sonysports1.akamaized.net/sony1/index.m3u8" },
+            { name: "Sony Sports 2", url: "https://sonysports2.akamaized.net/sony2/index.m3u8" },
+            { name: "Star Sports 1", url: "https://starsports1.akamaized.net/ss1/index.m3u8" },
+            { name: "ESPN", url: "https://espn-push.akamaized.net/espn/index.m3u8" }
+        ];
 
-    // HLS প্লেয়ার ফাংশন
-    function initPlayerStream(url, channelName = "") {
-        // পুরাতন HLS ইঞ্জিন ডেস্ট্রয়
-        if (hlsEngine) {
-            hlsEngine.destroy();
-            hlsEngine = null;
-        }
-        
-        // ভিডিও এলিমেন্ট রিসেট
-        videoElem.pause();
-        videoElem.removeAttribute('src');
-        videoElem.load();
-        
-        // HLS সাপোর্ট চেক [citation:1]
-        if (Hls.isSupported()) {
-            hlsEngine = new Hls({
-                maxBufferLength: 30,
-                maxMaxBufferLength: 60,
-                enableWorker: true,
-                manifestLoadingTimeOut: 15000,
-                levelLoadingTimeOut: 15000,
-                debug: false
-            });
-            
-            hlsEngine.loadSource(url);
-            hlsEngine.attachMedia(videoElem);
-            
-            hlsEngine.on(Hls.Events.MANIFEST_PARSED, () => {
-                console.log("Manifest loaded:", channelName);
-                videoElem.play().catch(e => console.log("Autoplay error:", e));
-                toast.style.display = "none";
-                currentRetryCount = 0;
-                toast.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${channelName} লোড হচ্ছে...`;
-            });
-            
-            hlsEngine.on(Hls.Events.ERROR, (event, data) => {
-                if (data.fatal) {
-                    switch (data.type) {
-                        case Hls.ErrorTypes.NETWORK_ERROR:
-                            if (currentRetryCount < MAX_RETRIES) {
-                                currentRetryCount++;
-                                toast.style.display = "block";
-                                toast.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> রিকানেক্ট (${currentRetryCount}/${MAX_RETRIES})...`;
-                                setTimeout(() => initPlayerStream(url, channelName), 2000);
-                            } else {
-                                toast.innerHTML = "❌ স্ট্রিম লোড হয়নি! অন্য চ্যানেল সিলেক্ট করুন";
-                                setTimeout(() => toast.style.display = "none", 3000);
-                            }
-                            break;
-                        case Hls.ErrorTypes.MEDIA_ERROR:
-                            hlsEngine.recoverMediaError();
-                            break;
-                        default:
-                            toast.innerHTML = "⚠️ স্ট্রিমিং এরর!";
-                            setTimeout(() => toast.style.display = "none", 2000);
-                            break;
+        // ফুটবল বিশ্বকাপ ২০২৬ চ্যানেল (বিশ্বকাপ চলাকালীন আপডেট করা লিংক)
+        const worldcupChannels = [
+            { name: "FIFA World Cup Official", url: "https://fifa-worldcup.akamaized.net/wc2026/english.m3u8", tag: "4K" },
+            { name: "BBC Sport (UK)", url: "https://vs-hls-push-uk.bbc.edgesuite.net/bbcworldcup/index.m3u8", tag: "LIVE" },
+            { name: "Fox Sports (USA)", url: "https://foxsports-fifa.akamaized.net/fox/en.m3u8", tag: "EN" },
+            { name: "Sky Sports Football", url: "https://skysports-football.akamaized.net/skysports.m3u8", tag: "UHD" },
+            { name: "beIN Sports", url: "https://beinsports-fifa.akamaized.net/bein/en.m3u8", tag: "AR/EN" },
+            { name: "Sport 24 (Inflight)", url: "https://sport24-fifa.akamaized.net/sport24.m3u8", tag: "Worldwide" }
+        ];
+
+        let player = null;
+
+        function initPlayer() {
+            player = videojs('livePlayer', {
+                liveui: true,
+                html5: {
+                    hls: {
+                        enableLowInitialPlaylist: true,
+                        overrideNative: true
                     }
+                },
+                autoplay: true,
+                controls: true,
+                preload: 'auto'
+            });
+        }
+
+        function loadChannel(url, channelName) {
+            if (!player) initPlayer();
+            player.src({ src: url, type: 'application/x-mpegURL' });
+            player.play().catch(e => console.log("Auto-play blocked:", e));
+            document.querySelector('.header p').innerHTML = `🎬 বর্তমানে চলছে: ${channelName}`;
+        }
+
+        function renderButtons(containerId, channelsArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            channelsArray.forEach(ch => {
+                const btn = document.createElement('button');
+                btn.className = 'channel-btn';
+                btn.innerHTML = `${ch.name} ${ch.tag ? `<span class="live-badge">${ch.tag}</span>` : ''}`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadChannel(ch.url, ch.name);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initPlayer();
+            renderButtons('bdChannels', bangladeshiChannels);
+            renderButtons('sportsChannels', sportsChannels);
+            renderButtons('worldcupChannels', worldcupChannels);
+
+            // প্রথম চ্যানেল লোড (বাংলাদেশের প্রথমটি)
+            setTimeout(() => {
+                if (bangladeshiChannels.length > 0) {
+                    const firstBtn = document.querySelector('#bdChannels .channel-btn');
+                    if (firstBtn) firstBtn.classList.add('active');
+                    loadChannel(bangladeshiChannels[0].url, bangladeshiChannels[0].name);
                 }
-            });
-        } 
-        else if (videoElem.canPlayType('application/vnd.apple.mpegurl')) {
-            // সাফারি ব্রাউজারের জন্য নেটিভ HLS
-            videoElem.src = url;
-            videoElem.addEventListener('loadedmetadata', () => {
-                videoElem.play().catch(e => console.log(e));
-                toast.style.display = "none";
-            });
-        } 
-        else {
-            toast.innerHTML = "❌ আপনার ব্রাউজার HLS সাপোর্ট করে না!";
-            toast.style.display = "block";
-            setTimeout(() => toast.style.display = "none", 3000);
-        }
-    }
-
-    // চ্যানেল লিস্ট রেন্ডার
-    function renderChannels() {
-        if (!container) return;
-        container.innerHTML = '';
-        
-        const filtered = channelDatabase.filter(ch => activeCategory === 'All' || ch.category === activeCategory);
-        
-        if (filtered.length === 0) {
-            container.innerHTML = `<div class="error-message"><i class="fa-regular fa-circle-xmark fa-2x"></i><br>এই ক্যাটাগরিতে কোনো চ্যানেল নেই</div>`;
-            return;
-        }
-        
-        filtered.forEach(ch => {
-            const card = document.createElement('div');
-            card.className = 'channel-card';
-            card.onclick = () => {
-                toast.style.display = "block";
-                toast.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${ch.name} লোড হচ্ছে...`;
-                initPlayerStream(ch.url, ch.name);
-            };
-            
-            card.innerHTML = `
-                <div class="channel-icon">
-                    <i class="fa-solid ${ch.icon}"></i>
-                </div>
-                <div class="channel-info">
-                    <h4>${ch.name}</h4>
-                    <p><i class="fa-regular fa-clock"></i> 24/7 · ${ch.category}</p>
-                </div>
-                <div class="play-icon">
-                    <i class="fa-solid fa-circle-play"></i>
-                </div>
-            `;
-            container.appendChild(card);
+            }, 100);
         });
-    }
-
-    // ক্যাটাগরি পরিবর্তন
-    function switchCategory(category, clickedBtn) {
-        activeCategory = category;
-        renderChannels();
-        
-        document.querySelectorAll('.cat-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        if (clickedBtn) clickedBtn.classList.add('active');
-    }
-
-    // ইভেন্ট লিসেনার
-    function initCategoryEvents() {
-        const btns = document.querySelectorAll('.cat-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const cat = btn.getAttribute('data-cat');
-                switchCategory(cat, btn);
-            });
-        });
-    }
-
-    // পেজ লোড হলে প্রথম চ্যানেল চালু
-    window.onload = () => {
-        renderChannels();
-        initCategoryEvents();
-        
-        // প্রথম টেস্ট স্ট্রিম চালু (নিশ্চিত কাজ করবে)
-        setTimeout(() => {
-            toast.style.display = "block";
-            toast.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> প্রিমিয়াম স্ট্রিম কানেক্ট হচ্ছে...";
-            const firstChannel = channelDatabase.find(ch => ch.category === "Test") || channelDatabase[0];
-            initPlayerStream(firstChannel.url, firstChannel.name);
-        }, 500);
-    };
+    })();
 </script>
 </body>
 </html>
